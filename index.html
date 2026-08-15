@@ -11,7 +11,6 @@
   <script>if ('scrollRestoration' in history) history.scrollRestoration = 'manual';</script>
   <style>
 :root{--accent:#9C7A3C}
-/* LVO Holdings — shared division-site stylesheet, white-mode variant for Careers */
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 :root{
   --red:#8B0000;--red-hi:#B01E1E;
@@ -24,7 +23,6 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;
   background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
 .page{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column}
 
-/* NAV */
 nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:1.8rem 4rem;display:flex;justify-content:space-between;align-items:center;background:linear-gradient(to bottom,rgba(250,248,244,.97),transparent)}
 .nav-left{display:flex;flex-direction:column;gap:.2rem}
 .nav-parent{font-family:'Cinzel',serif;font-size:.48rem;letter-spacing:.35em;color:var(--red-hi);text-decoration:none;text-transform:uppercase;transition:color .3s}
@@ -37,7 +35,6 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:1.8rem 4rem;display:
 .nav-dash-link{font-family:'Cinzel',serif;font-size:.48rem;letter-spacing:.3em;color:var(--accent);text-decoration:none;text-transform:uppercase;border:.5px solid color-mix(in srgb,var(--accent) 45%,transparent);padding:.35rem .75rem;transition:background .25s,border-color .25s}
 .nav-dash-link:hover{background:color-mix(in srgb,var(--accent) 10%,transparent);border-color:var(--accent)}
 
-/* HERO */
 .hero{min-height:100vh;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;text-align:left;padding:7rem 4rem 4rem;position:relative}
 .hero::before{content:'';position:absolute;top:50%;left:15%;transform:translate(-50%,-50%);width:min(600px,90vw);height:min(600px,90vw);border-radius:50%;pointer-events:none;
   background:radial-gradient(circle,color-mix(in srgb,var(--accent) 10%,transparent) 0%,transparent 70%)}
@@ -47,12 +44,10 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:1.8rem 4rem;display:
 .hero-statement{font-size:clamp(1rem,3vw,1.5rem);font-weight:300;font-style:italic;line-height:1.8;color:var(--white);opacity:0;max-width:560px;border-left:1px solid color-mix(in srgb,var(--accent) 40%,transparent);padding-left:1.5rem;animation:fadeUp 1s cubic-bezier(.16,1,.3,1) .9s forwards}
 .hero-rule{width:60px;height:1px;background:linear-gradient(to right,var(--accent),transparent);margin:3rem 0 0;opacity:0;animation:fadeIn 1s ease 1.4s forwards}
 
-/* DIVIDER */
 .section-divider{display:flex;align-items:center;gap:1.5rem;padding:0 2rem;margin:5rem auto;max-width:900px;width:100%}
 .section-divider::before,.section-divider::after{content:'';flex:1;height:.5px;background:linear-gradient(to right,transparent,var(--accent) 40%,transparent)}
 .section-divider span{font-family:'Cinzel',serif;font-size:.55rem;letter-spacing:.4em;color:var(--accent);white-space:nowrap}
 
-/* NOTICE (about / EEO) */
 .notice-wrap{max-width:700px;margin:0 auto;padding:0 2rem 6rem;width:100%}
 .notice-box{border:.5px solid color-mix(in srgb,var(--accent) 30%,transparent);background:color-mix(in srgb,var(--accent) 3%,transparent);padding:2.5rem;position:relative;text-align:center}
 .notice-box::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:60%;height:1px;background:linear-gradient(to right,transparent,var(--accent),transparent)}
@@ -60,7 +55,6 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:1.8rem 4rem;display:
 .notice-text{font-size:.92rem;font-weight:300;font-style:italic;line-height:1.9;color:var(--dim)}
 .notice-text+.notice-text{margin-top:1.2rem}
 
-/* PORTAL */
 .portal-wrap{max-width:960px;margin:0 auto;padding:0 2rem 8rem;width:100%}
 #portalGate,#portalRedirect{border:.5px solid color-mix(in srgb,var(--accent) 30%,transparent);background:color-mix(in srgb,var(--accent) 3%,transparent);padding:4rem 3rem;position:relative;text-align:center;max-width:480px;margin:0 auto}
 #portalGate::before,#portalRedirect::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:50%;height:1px;background:linear-gradient(to right,transparent,var(--accent),transparent)}
@@ -76,7 +70,6 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:1.8rem 4rem;display:
 .redirect-btn:hover{background:var(--accent);color:var(--bg)}
 .redirect-rule{width:1px;height:32px;background:linear-gradient(to bottom,transparent,color-mix(in srgb,var(--accent) 40%,transparent),transparent);margin:1.8rem auto 0}
 
-/* FOOTER */
 footer{border-top:.5px solid color-mix(in srgb,var(--accent) 20%,transparent);padding:2.5rem 2rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1.2rem;margin-top:auto}
 .footer-back{font-family:'Cinzel',serif;font-size:.52rem;letter-spacing:.3em;color:var(--dim);text-decoration:none;text-transform:uppercase;transition:color .3s}
 .footer-back:hover{color:var(--accent)}
@@ -91,11 +84,9 @@ footer{border-top:.5px solid color-mix(in srgb,var(--accent) 20%,transparent);pa
 .reveal{opacity:0;transform:translateY(20px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1)}
 .reveal.visible{opacity:1;transform:translateY(0)}
 
-/* Scramble text */
 .scramble-word{display:inline-block;white-space:nowrap}
 .scramble-char{display:inline-block;will-change:contents}
 
-/* Clerk input override */
 .cl-formFieldInput,[data-clerk-input],input.cl-formFieldInput{font-family:'Cormorant Garamond',Georgia,serif !important;font-size:1rem !important;letter-spacing:.04em !important;text-transform:none !important;font-variant:normal !important}
 
 @media(max-width:600px){
@@ -183,13 +174,11 @@ footer{border-top:.5px solid color-mix(in srgb,var(--accent) 20%,transparent);pa
   </footer>
 </div>
 
-<script>window.LVO_PAGE = { accent: '#9C7A3C', dashboardUrl: 'https://dashboard.career.wearelvo.com' };</script>
+<script>window.LVO_PAGE = { accent: '#9C7A3C', dashboardUrl: 'https://job.careers.wearelvo.com' };</script>
 <script>
-/* LVO Holdings — shared division-site behavior */
 (function () {
   const { accent, dashboardUrl } = window.LVO_PAGE || {};
 
-  /* Scroll reveal */
   document.querySelectorAll('.reveal').forEach((r) => {
     new IntersectionObserver((entries, o) => {
       entries.forEach((e) => {
@@ -198,7 +187,6 @@ footer{border-top:.5px solid color-mix(in srgb,var(--accent) 20%,transparent);pa
     }, { threshold: .08 }).observe(r);
   });
 
-  /* Scramble text — cursor-proximity character scramble, word-wrapped so lines only break between words */
   const RADIUS = 20, DURATION = 200, CHARS = 'LVOᛪ༙';
 
   function buildWordSpan(word) {
@@ -263,7 +251,6 @@ footer{border-top:.5px solid color-mix(in srgb,var(--accent) 20%,transparent);pa
     });
   });
 
-  /* Clerk auth wiring */
   const clerkAppearance = {
     variables: {
       colorBackground: '#FFFFFF', colorText: '#16181C', colorPrimary: accent,
