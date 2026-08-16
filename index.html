@@ -62,8 +62,6 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:1.8rem 4rem;display:
 #portalRedirect.show{display:block}
 .gate-title,.redirect-title{font-family:'Cinzel',serif;font-size:.62rem;letter-spacing:.4em;color:var(--accent);text-transform:uppercase;margin-bottom:.8rem}
 .gate-sub{font-size:.88rem;font-weight:300;font-style:italic;color:var(--dim);margin-bottom:2.5rem;line-height:1.7}
-#clerkSignIn{display:flex;justify-content:center;width:100%}
-#clerkSignIn>*{width:100% !important;max-width:100% !important}
 .redirect-name{font-family:'Cinzel',serif;font-size:1rem;font-weight:600;letter-spacing:.18em;color:var(--chrome);margin-bottom:.5rem}
 .redirect-sub{font-size:.88rem;font-weight:300;font-style:italic;color:var(--dim);margin-bottom:2rem;line-height:1.7}
 .redirect-btn{display:inline-block;background:transparent;border:.5px solid var(--accent);color:var(--accent);font-family:'Cinzel',serif;font-size:.56rem;letter-spacing:.38em;padding:1rem 2rem;cursor:pointer;text-transform:uppercase;transition:background .25s,color .25s;text-decoration:none}
@@ -86,8 +84,6 @@ footer{border-top:.5px solid color-mix(in srgb,var(--accent) 20%,transparent);pa
 
 .scramble-word{display:inline-block;white-space:nowrap}
 .scramble-char{display:inline-block;will-change:contents}
-
-.cl-formFieldInput,[data-clerk-input],input.cl-formFieldInput{font-family:'Cormorant Garamond',Georgia,serif !important;font-size:1rem !important;letter-spacing:.04em !important;text-transform:none !important;font-variant:normal !important}
 
 @media(max-width:600px){
   nav{padding:1.2rem}
@@ -152,7 +148,7 @@ footer{border-top:.5px solid color-mix(in srgb,var(--accent) 20%,transparent);pa
     <div id="portalGate">
       <p class="gate-title" data-scramble>Careers Portal Access</p>
       <p class="gate-sub" data-scramble-block>Sign in to view open roles, submit your application, and track your status.<br/>New applicants start in the general resource pool.</p>
-      <div id="clerkSignIn"></div>
+      <a class="redirect-btn" id="portalSignInBtn" href="#">Sign In →</a>
     </div>
     <div id="portalRedirect">
       <p class="redirect-title" data-scramble>Careers Portal</p>
@@ -174,10 +170,18 @@ footer{border-top:.5px solid color-mix(in srgb,var(--accent) 20%,transparent);pa
   </footer>
 </div>
 
-<script>window.LVO_PAGE = { accent: '#9C7A3C', dashboardUrl: 'https://job.careers.wearelvo.com' };</script>
+<script>
+window.LVO_PAGE = {
+  accent: '#9C7A3C',
+  dashboardUrl: 'https://job.careers.wearelvo.com',
+  // Hosted Clerk Account Portal — sign-in/sign-up UI lives here now,
+  // styled via the Clerk dashboard's Customization tab rather than embedded on this page.
+  signInUrl: 'https://accounts.careers.wearelvo.com/sign-in'
+};
+</script>
 <script>
 (function () {
-  const { accent, dashboardUrl } = window.LVO_PAGE || {};
+  const { accent, dashboardUrl, signInUrl } = window.LVO_PAGE || {};
 
   document.querySelectorAll('.reveal').forEach((r) => {
     new IntersectionObserver((entries, o) => {
@@ -258,19 +262,14 @@ footer{border-top:.5px solid color-mix(in srgb,var(--accent) 20%,transparent);pa
       borderRadius: '0px', fontFamily: "'Cormorant Garamond',Georgia,serif"
     },
     elements: {
-      card: { background: 'transparent', border: `.5px solid ${accent}66`, boxShadow: 'none', borderRadius: '0' },
-      headerTitle: { fontFamily: "'Cinzel',serif", letterSpacing: '.2em', color: '#3A392F' },
-      headerSubtitle: { color: '#726F63', fontStyle: 'italic' },
-      formFieldLabel: { color: '#726F63', fontFamily: "'Cinzel',serif", letterSpacing: '.12em', fontSize: '.7rem' },
-      formFieldInput: { background: '#FFFFFF', border: `.5px solid ${accent}80`, borderRadius: '0', color: '#16181C', fontFamily: "Georgia,'Times New Roman',serif", fontSize: '1rem', letterSpacing: '.04em', textTransform: 'none', fontVariant: 'normal' },
-      formButtonPrimary: { background: 'transparent', border: `.5px solid ${accent}`, borderRadius: '0', color: accent, fontFamily: "'Cinzel',serif", letterSpacing: '.3em', textTransform: 'uppercase', boxShadow: 'none' },
-      footerActionLink: { color: accent },
-      dividerLine: { background: `${accent}44` },
-      dividerText: { color: '#726F63' },
-      socialButtonsIconButton: { background: '#FFFFFF', border: `.5px solid ${accent}66`, borderRadius: '0' },
       avatarBox: { border: `.5px solid ${accent}88`, borderRadius: '0' }
     }
   };
+
+  function buildSignInUrl() {
+    const redirect = encodeURIComponent(window.location.href);
+    return `${signInUrl}?redirect_url=${redirect}`;
+  }
 
   window.addEventListener('load', async () => {
     await Clerk.load();
@@ -279,18 +278,13 @@ footer{border-top:.5px solid color-mix(in srgb,var(--accent) 20%,transparent);pa
     const redirect = document.getElementById('portalRedirect');
     const navUserBtn = document.getElementById('navUserBtn');
     const clerkNavBtn = document.getElementById('clerkNavBtn');
-    const signInEl = document.getElementById('clerkSignIn');
-    let signInMounted = false;
+    const signInBtn = document.getElementById('portalSignInBtn');
 
     function showGate() {
       gate.style.display = 'block';
       redirect.classList.remove('show');
       navUserBtn.classList.remove('show');
-      if (!signInMounted) {
-        Clerk.mountSignIn(signInEl, { appearance: clerkAppearance, routing: 'virtual' });
-        signInMounted = true;
-        [0, 50, 300].forEach((t) => setTimeout(() => window.scrollTo(0, 0), t));
-      }
+      signInBtn.href = buildSignInUrl();
     }
 
     function showSignedIn(user) {
