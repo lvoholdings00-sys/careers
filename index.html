@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Careers · LVO</title>
+<link rel="icon" type="image/png" href="assets/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;900&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--gold:#B08D45;--gold2:#C8A96E;--ink:#171614;--muted:#77736B;--paper:#FAF9F6;--line:rgba(176,141,69,.24)}
+html,body{min-height:100%;background:var(--paper)}
+body{color:var(--ink);font-family:'Cormorant Garamond',Georgia,serif}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.025;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.page{min-height:100vh;display:flex;flex-direction:column}
+nav{padding:2rem 4rem;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line)}
+.brand{font:600 .95rem 'Cinzel',serif;letter-spacing:.3em;color:var(--ink);text-decoration:none}
+.back{font:.5rem 'Cinzel',serif;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);text-decoration:none}
+.back:hover{color:var(--gold)}
+main{flex:1;display:flex;align-items:center;justify-content:center;text-align:center;padding:6rem 2rem;position:relative}
+main:before{content:"";position:absolute;width:min(700px,90vw);height:min(700px,90vw);border-radius:50%;background:radial-gradient(circle,rgba(200,169,110,.10),transparent 68%);pointer-events:none}
+.content{position:relative;max-width:760px}
+.eyebrow{font:600 .55rem 'Cinzel',serif;letter-spacing:.5em;text-transform:uppercase;color:var(--gold);margin-bottom:2rem}
+.mark{width:58px;height:58px;border:1px solid var(--gold);border-radius:50%;display:grid;place-items:center;margin:0 auto 2rem}
+.mark span{width:7px;height:7px;border:1px solid var(--gold);border-radius:50%}
+h1{font:900 clamp(2.5rem,7vw,5.6rem) 'Cinzel',serif;letter-spacing:.12em;line-height:1;color:var(--ink);margin-bottom:1.4rem}
+.lead{font-size:clamp(1.1rem,2.3vw,1.45rem);font-style:italic;font-weight:300;line-height:1.8;color:#5f5b54;max-width:620px;margin:auto}
+.divider{display:flex;align-items:center;gap:1rem;margin:2.8rem auto;width:min(420px,80vw)}
+.divider:before,.divider:after{content:"";height:1px;background:linear-gradient(to right,transparent,var(--line));flex:1}
+.divider:after{background:linear-gradient(to left,transparent,var(--line))}
+.divider span{font: .45rem 'Cinzel',serif;letter-spacing:.3em;color:var(--gold);text-transform:uppercase}
+.details{font:.52rem 'Cinzel',serif;letter-spacing:.28em;color:#969087;text-transform:uppercase}
+footer{border-top:1px solid var(--line);padding:2rem 4rem;display:flex;justify-content:space-between;gap:1rem;font:.45rem 'Cinzel',serif;letter-spacing:.2em;color:#9a958b;text-transform:uppercase}
+@media(max-width:600px){nav{padding:1.3rem 1.2rem}.back{display:none}main{padding:5rem 1.2rem}footer{padding:1.5rem;flex-direction:column;text-align:center}}
+</style>
+</head>
+<body>
+<div class="page">
+<nav>
+  <a class="brand" href="https://wearelvo.com">LVO</a>
+  <a class="back" href="https://wearelvo.com">← LVO Holdings</a>
+</nav>
+<main>
+  <section class="content">
+    <p class="eyebrow">LVO Careers · Access Temporarily Restricted</p>
+    <div class="mark"><span></span></div>
+    <h1>We're Rebuilding.</h1>
+    <p class="lead">Our careers platform is temporarily unavailable while we make improvements behind the scenes.</p>
+    <div class="divider"><span>Careers</span></div>
+    <p class="details">Opportunities will return shortly</p>
+  </section>
+</main>
+<footer>
+  <span>LVO Holdings</span>
+  <span>&copy; 2026 · All Rights Reserved</span>
+</footer>
+</div>
+</body>
+</html>
