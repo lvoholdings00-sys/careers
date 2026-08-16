@@ -62,6 +62,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:1.8rem 4rem;display:
 #portalRedirect.show{display:block}
 .gate-title,.redirect-title{font-family:'Cinzel',serif;font-size:.62rem;letter-spacing:.4em;color:var(--accent);text-transform:uppercase;margin-bottom:.8rem}
 .gate-sub{font-size:.88rem;font-weight:300;font-style:italic;color:var(--dim);margin-bottom:2.5rem;line-height:1.7}
+#clerkSignIn{display:flex;justify-content:center}
 .redirect-name{font-family:'Cinzel',serif;font-size:1rem;font-weight:600;letter-spacing:.18em;color:var(--chrome);margin-bottom:.5rem}
 .redirect-sub{font-size:.88rem;font-weight:300;font-style:italic;color:var(--dim);margin-bottom:2rem;line-height:1.7}
 .redirect-btn{display:inline-block;background:transparent;border:.5px solid var(--accent);color:var(--accent);font-family:'Cinzel',serif;font-size:.56rem;letter-spacing:.38em;padding:1rem 2rem;cursor:pointer;text-transform:uppercase;transition:background .25s,color .25s;text-decoration:none}
@@ -148,7 +149,7 @@ footer{border-top:.5px solid color-mix(in srgb,var(--accent) 20%,transparent);pa
     <div id="portalGate">
       <p class="gate-title" data-scramble>Careers Portal Access</p>
       <p class="gate-sub" data-scramble-block>Sign in to view open roles, submit your application, and track your status.<br/>New applicants start in the general resource pool.</p>
-      <a class="redirect-btn" id="portalSignInBtn" href="#">Sign In →</a>
+      <div id="clerkSignIn"></div>
     </div>
     <div id="portalRedirect">
       <p class="redirect-title" data-scramble>Careers Portal</p>
@@ -173,15 +174,15 @@ footer{border-top:.5px solid color-mix(in srgb,var(--accent) 20%,transparent);pa
 <script>
 window.LVO_PAGE = {
   accent: '#9C7A3C',
-  dashboardUrl: 'https://job.careers.wearelvo.com',
-  // Hosted Clerk Account Portal — sign-in/sign-up UI lives here now,
-  // styled via the Clerk dashboard's Customization tab rather than embedded on this page.
-  signInUrl: 'https://accounts.careers.wearelvo.com/sign-in'
+  // This page (careers.wearelvo.com) IS the login page now — Clerk's <SignIn/>
+  // is mounted directly into #clerkSignIn below instead of redirecting out
+  // to a hosted Account Portal subdomain.
+  dashboardUrl: 'https://jobs.careers.wearelvo.com'
 };
 </script>
 <script>
 (function () {
-  const { accent, dashboardUrl, signInUrl } = window.LVO_PAGE || {};
+  const { accent, dashboardUrl } = window.LVO_PAGE || {};
 
   document.querySelectorAll('.reveal').forEach((r) => {
     new IntersectionObserver((entries, o) => {
@@ -262,14 +263,11 @@ window.LVO_PAGE = {
       borderRadius: '0px', fontFamily: "'Cormorant Garamond',Georgia,serif"
     },
     elements: {
-      avatarBox: { border: `.5px solid ${accent}88`, borderRadius: '0' }
+      avatarBox: { border: `.5px solid ${accent}88`, borderRadius: '0' },
+      card: { boxShadow: 'none', border: 'none', width: '100%' },
+      rootBox: { width: '100%' }
     }
   };
-
-  function buildSignInUrl() {
-    const redirect = encodeURIComponent(window.location.href);
-    return `${signInUrl}?redirect_url=${redirect}`;
-  }
 
   window.addEventListener('load', async () => {
     await Clerk.load();
@@ -278,13 +276,12 @@ window.LVO_PAGE = {
     const redirect = document.getElementById('portalRedirect');
     const navUserBtn = document.getElementById('navUserBtn');
     const clerkNavBtn = document.getElementById('clerkNavBtn');
-    const signInBtn = document.getElementById('portalSignInBtn');
+    const clerkSignInEl = document.getElementById('clerkSignIn');
 
     function showGate() {
       gate.style.display = 'block';
       redirect.classList.remove('show');
       navUserBtn.classList.remove('show');
-      signInBtn.href = buildSignInUrl();
     }
 
     function showSignedIn(user) {
@@ -294,6 +291,16 @@ window.LVO_PAGE = {
       navUserBtn.classList.add('show');
       Clerk.mountUserButton(clerkNavBtn, { appearance: clerkAppearance });
     }
+
+    // Mount the sign-in form directly on this page — this is the login page.
+    // After a successful sign-in Clerk sends the user straight to the
+    // jobs.careers.wearelvo.com dashboard.
+    Clerk.mountSignIn(clerkSignInEl, {
+      appearance: clerkAppearance,
+      signUpUrl: '#',
+      fallbackRedirectUrl: dashboardUrl,
+      forceRedirectUrl: dashboardUrl
+    });
 
     Clerk.user ? showSignedIn(Clerk.user) : showGate();
     Clerk.addListener(({ user }) => (user ? showSignedIn(user) : showGate()));
