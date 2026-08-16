@@ -62,7 +62,8 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:1.8rem 4rem;display:
 #portalRedirect.show{display:block}
 .gate-title,.redirect-title{font-family:'Cinzel',serif;font-size:.62rem;letter-spacing:.4em;color:var(--accent);text-transform:uppercase;margin-bottom:.8rem}
 .gate-sub{font-size:.88rem;font-weight:300;font-style:italic;color:var(--dim);margin-bottom:2.5rem;line-height:1.7}
-#clerkSignIn{display:flex;justify-content:center}
+#clerkSignIn{display:flex;justify-content:center;width:100%}
+#clerkSignIn>*{width:100% !important;max-width:100% !important}
 .redirect-name{font-family:'Cinzel',serif;font-size:1rem;font-weight:600;letter-spacing:.18em;color:var(--chrome);margin-bottom:.5rem}
 .redirect-sub{font-size:.88rem;font-weight:300;font-style:italic;color:var(--dim);margin-bottom:2rem;line-height:1.7}
 .redirect-btn{display:inline-block;background:transparent;border:.5px solid var(--accent);color:var(--accent);font-family:'Cinzel',serif;font-size:.56rem;letter-spacing:.38em;padding:1rem 2rem;cursor:pointer;text-transform:uppercase;transition:background .25s,color .25s;text-decoration:none}
@@ -85,6 +86,8 @@ footer{border-top:.5px solid color-mix(in srgb,var(--accent) 20%,transparent);pa
 
 .scramble-word{display:inline-block;white-space:nowrap}
 .scramble-char{display:inline-block;will-change:contents}
+
+.cl-formFieldInput,[data-clerk-input],input.cl-formFieldInput{font-family:'Cormorant Garamond',Georgia,serif !important;font-size:1rem !important;letter-spacing:.04em !important;text-transform:none !important;font-variant:normal !important}
 
 @media(max-width:600px){
   nav{padding:1.2rem}
@@ -171,16 +174,9 @@ footer{border-top:.5px solid color-mix(in srgb,var(--accent) 20%,transparent);pa
   </footer>
 </div>
 
+<script>window.LVO_PAGE = { accent: '#9C7A3C', dashboardUrl: 'https://jobs.careers.wearelvo.com' };</script>
 <script>
-window.LVO_PAGE = {
-  accent: '#9C7A3C',
-  // This page (careers.wearelvo.com) IS the login page now — Clerk's <SignIn/>
-  // is mounted directly into #clerkSignIn below instead of redirecting out
-  // to a hosted Account Portal subdomain.
-  dashboardUrl: 'https://jobs.careers.wearelvo.com'
-};
-</script>
-<script>
+/* Mirrors the Alliance page's Clerk wiring exactly. */
 (function () {
   const { accent, dashboardUrl } = window.LVO_PAGE || {};
 
@@ -263,9 +259,17 @@ window.LVO_PAGE = {
       borderRadius: '0px', fontFamily: "'Cormorant Garamond',Georgia,serif"
     },
     elements: {
-      avatarBox: { border: `.5px solid ${accent}88`, borderRadius: '0' },
-      card: { boxShadow: 'none', border: 'none', width: '100%' },
-      rootBox: { width: '100%' }
+      card: { background: 'transparent', border: `.5px solid ${accent}40`, boxShadow: 'none', borderRadius: '0' },
+      headerTitle: { fontFamily: "'Cinzel',serif", letterSpacing: '.2em', color: '#3A392F' },
+      headerSubtitle: { color: '#726F63', fontStyle: 'italic' },
+      formFieldLabel: { color: '#726F63', fontFamily: "'Cinzel',serif", letterSpacing: '.12em', fontSize: '.7rem' },
+      formFieldInput: { background: '#FAF8F4', border: `.5px solid ${accent}59`, borderRadius: '0', color: '#16181C', fontFamily: "Georgia,'Times New Roman',serif", fontSize: '1rem', letterSpacing: '.04em', textTransform: 'none', fontVariant: 'normal' },
+      formButtonPrimary: { background: 'transparent', border: `.5px solid ${accent}`, borderRadius: '0', color: accent, fontFamily: "'Cinzel',serif", letterSpacing: '.3em', textTransform: 'uppercase', boxShadow: 'none' },
+      footerActionLink: { color: accent },
+      dividerLine: { background: `${accent}33` },
+      dividerText: { color: '#726F63' },
+      socialButtonsIconButton: { background: 'transparent', border: `.5px solid ${accent}40`, borderRadius: '0' },
+      avatarBox: { border: `.5px solid ${accent}88`, borderRadius: '0' }
     }
   };
 
@@ -276,31 +280,30 @@ window.LVO_PAGE = {
     const redirect = document.getElementById('portalRedirect');
     const navUserBtn = document.getElementById('navUserBtn');
     const clerkNavBtn = document.getElementById('clerkNavBtn');
-    const clerkSignInEl = document.getElementById('clerkSignIn');
+    const signInEl = document.getElementById('clerkSignIn');
+    let signInMounted = false;
 
     function showGate() {
       gate.style.display = 'block';
       redirect.classList.remove('show');
       navUserBtn.classList.remove('show');
+      if (!signInMounted) {
+        Clerk.mountSignIn(signInEl, {
+          appearance: clerkAppearance,
+          routing: 'virtual',
+          fallbackRedirectUrl: dashboardUrl,
+          forceRedirectUrl: dashboardUrl
+        });
+        signInMounted = true;
+        [0, 50, 300].forEach((t) => setTimeout(() => window.scrollTo(0, 0), t));
+      }
     }
 
     function showSignedIn(user) {
-      gate.style.display = 'none';
-      redirect.classList.add('show');
+      // Don't wait for a click — go straight to the dashboard.
       document.getElementById('redirectName').textContent = user.firstName || 'Applicant';
-      navUserBtn.classList.add('show');
-      Clerk.mountUserButton(clerkNavBtn, { appearance: clerkAppearance });
+      window.location.href = dashboardUrl;
     }
-
-    // Mount the sign-in form directly on this page — this is the login page.
-    // After a successful sign-in Clerk sends the user straight to the
-    // jobs.careers.wearelvo.com dashboard.
-    Clerk.mountSignIn(clerkSignInEl, {
-      appearance: clerkAppearance,
-      signUpUrl: '#',
-      fallbackRedirectUrl: dashboardUrl,
-      forceRedirectUrl: dashboardUrl
-    });
 
     Clerk.user ? showSignedIn(Clerk.user) : showGate();
     Clerk.addListener(({ user }) => (user ? showSignedIn(user) : showGate()));
