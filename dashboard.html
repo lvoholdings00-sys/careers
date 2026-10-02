@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Workforce Dashboard · LVO</title>
+  <meta name="description" content="LVO Holdings Workforce Portal - Employee positions, internal mobility, and HR payroll management.">
+  <meta property="og:title" content="Workforce Dashboard · LVO">
+  <meta property="og:description" content="LVO Holdings Workforce Portal - Employee positions, internal mobility, and HR payroll management.">
+  <link rel="icon" type="image/png" href="assets/logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;900&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- React, ReactDOM, and Recharts dependencies -->
+  <script src="/vendor/prop-types/prop-types.min.js"></script>
+  <script src="/vendor/react/umd/react.production.min.js"></script>
+  <script src="/vendor/react-dom/umd/react-dom.production.min.js"></script>
+  <script src="/vendor/recharts/umd/Recharts.js"></script>
+  <!-- HrDashboard React Component -->
+  <script src="/src/HrDashboard.js"></script>
+
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --canvas: #FAF9F6;
+      --surface: #FFFFFF;
+      --surface-subtle: #F5F4F0;
+      --surface-hover: #EFECE6;
+      --border-subtle: #E8E5DC;
+      --border-strong: #D4D0C5;
+      --ink: #171614;
+      --ink-secondary: #48453E;
+      --ink-muted: #747167;
+      --ink-faint: #A29E93;
+      --gold: #9C7A3C;
+      --gold-dark: #82642F;
+      --gold-surface: #FAF6ED;
+      --gold-border: #E8DCBE;
+      --emerald: #15803D;
+      --emerald-surface: #F0FDF4;
+      --emerald-border: #BBF7D0;
+      --font-brand: 'Cinzel', Georgia, serif;
+      --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    html {
+      background-color: var(--canvas);
+    }
+
+    body {
+      min-height: 100vh;
+      color: var(--ink);
+      font-family: var(--font-body);
+      background-color: var(--canvas);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .tabular-nums {
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* Loading Screen */
+    .loading-screen {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: var(--canvas);
+      font-size: 0.9rem;
+    }
+
+    .spinner {
+      width: 36px;
+      height: 36px;
+      border: 3px solid var(--border-subtle);
+      border-top-color: var(--gold);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Subdomain Status Banner */
+    .portal-banner {
+      background: var(--ink);
+      color: #FFFFFF;
+      padding: 0.5rem 1.5rem;
+      font-size: 0.8rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .portal-subdomain-tag {
+      font-family: var(--font-mono);
+      color: var(--gold-border);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .portal-banner-links {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+    }
+
+    .portal-banner-links a {
+      color: #E8E5DC;
+      text-decoration: none;
+      transition: color 0.15s ease;
+    }
+
+    .portal-banner-links a:hover {
+      color: #FFFFFF;
+      text-decoration: underline;
+    }
+
+    /* Top Application Bar */
+    header.dashboard-header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border-subtle);
+      position: sticky;
+      top: 0;
+      z-index: 90;
+    }
+
+    .header-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      height: 66px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+    }
+
+    .brand-link {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: var(--ink);
+    }
+
+    .brand-logo {
+      width: 28px;
+      height: 28px;
+      object-fit: contain;
+    }
+
+    .brand-title {
+      font-family: var(--font-brand);
+      font-size: 1.05rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+
+    .brand-title span {
+      color: var(--gold);
+    }
+
+    .header-divider {
+      width: 1px;
+      height: 24px;
+      background: var(--border-subtle);
+    }
+
+    .subdomain-badge {
+      font-family: var(--font-mono);
+      font-size: 0.74rem;
+      padding: 0.2rem 0.55rem;
+      background: var(--gold-surface);
+      border: 1px solid var(--gold-border);
+      border-radius: 4px;
+      color: var(--gold-dark);
+      font-weight: 600;
+    }
+
+    /* User Profile & Actions */
+    .user-actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .user-profile-badge {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-align: right;
+    }
+
+    .user-meta-name {
+      font-size: 0.86rem;
+      font-weight: 700;
+      color: var(--ink);
+      line-height: 1.2;
+    }
+
+    .user-meta-id {
+      font-size: 0.74rem;
+      color: var(--ink-muted);
+      font-family: var(--font-mono);
+    }
+
+    .user-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--surface-subtle);
+      border: 1px solid var(--border-strong);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.88rem;
+      color: var(--gold-dark);
+      flex-shrink: 0;
+    }
+
+    .btn-signout {
+      padding: 0.45rem 0.85rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--ink-secondary);
+      background: transparent;
+      border: 1px solid var(--border-subtle);
+      border-radius: 6px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.15s ease;
+    }
+
+    .btn-signout:hover {
+      background: var(--surface-subtle);
+      color: #DC2626;
+      border-color: #FCA5A5;
+    }
+
+    /* Dashboard Navigation Tabs */
+    .dashboard-tabs-bar {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 0 1.5rem;
+    }
+
+    .dashboard-tabs-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .dashboard-tabs-inner::-webkit-scrollbar {
+      display: none;
+    }
+
+    .tab-btn {
+      padding: 0.95rem 1.15rem;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--ink-muted);
+      background: transparent;
+      border: none;
+      border-bottom: 2px solid transparent;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      white-space: nowrap;
+      transition: all 0.15s ease;
+    }
+
+    .tab-btn:hover {
+      color: var(--ink);
+    }
+
+    .tab-btn.active {
+      color: var(--ink);
+      border-bottom-color: var(--gold);
+    }
+
+    /* Filter Toggle Buttons in Card Headers */
+    .filter-btn {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.25rem 0.65rem;
+      font-size: 0.76rem;
+      font-weight: 600;
+      color: var(--ink-secondary);
+      background: var(--surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .filter-btn:hover {
+      border-color: var(--border-strong);
+      color: var(--ink);
+    }
+
+    .filter-btn.active {
+      background: var(--surface-subtle);
+      border-color: var(--gold);
+      color: var(--gold-dark);
+    }
+
+    /* Main Container */
+    main.dashboard-main {
+      max-width: 1400px;
+      margin: 0 auto;
+      width: 100%;
+      padding: 2rem 1.5rem 4rem;
+      flex: 1;
+    }
+
+    /* Tab Panes */
+    .tab-content {
+      display: block;
+      animation: fadeIn 0.15s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Stat Cards Row */
+    .stat-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 2rem;
+    }
+
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 1.4rem;
+      position: relative;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+    }
+
+    .stat-card-label {
+      font-size: 0.74rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--ink-muted);
+      margin-bottom: 0.4rem;
+    }
+
+    .stat-card-value {
+      font-size: 1.65rem;
+      font-weight: 700;
+      color: var(--ink);
+      line-height: 1.2;
+      margin-bottom: 0.35rem;
+    }
+
+    .stat-card-meta {
+      font-size: 0.78rem;
+      color: var(--ink-muted);
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .stat-card-meta.positive {
+      color: var(--emerald);
+      font-weight: 600;
+    }
+
+    /* 2-Column Dashboard Grid */
+    .dashboard-grid-layout {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      align-items: start;
+    }
+
+    @media (min-width: 1040px) {
+      .dashboard-grid-layout {
+        grid-template-columns: 1.15fr 0.85fr;
+      }
+    }
+
+    /* Standard Card Container */
+    .dash-card {
+      background: var(--surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+    }
+
+    .dash-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1.25rem;
+      padding-bottom: 0.85rem;
+      border-bottom: 1px solid var(--border-subtle);
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .dash-card-title {
+      font-family: var(--font-brand);
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--ink);
+      letter-spacing: 0.04em;
+    }
+
+    .dash-card-subtitle {
+      font-size: 0.8rem;
+      color: var(--ink-muted);
+      margin-top: 0.15rem;
+    }
+
+    /* Position Details Card */
+    .position-hero-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1.25rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .position-main-title {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--ink);
+      line-height: 1.25;
+      margin-bottom: 0.25rem;
+    }
+
+    .position-division-text {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--gold-dark);
+    }
+
+    .status-indicator-tag {
+      font-family: var(--font-mono);
+      font-size: 0.74rem;
+      font-weight: 600;
+      padding: 0.25rem 0.65rem;
+      border-radius: 4px;
+      background: var(--emerald-surface);
+      border: 1px solid var(--emerald-border);
+      color: var(--emerald);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .status-indicator-tag::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--emerald);
+    }
+
+    /* Key Attributes Matrix */
+    .attr-matrix {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+      padding: 1.15rem;
+      background: var(--surface-subtle);
+      border: 1px solid var(--border-subtle);
+      border-radius: 6px;
+      margin-bottom: 1.5rem;
+    }
+
+    .attr-label {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      color: var(--ink-muted);
+      margin-bottom: 0.2rem;
+    }
+
+    .attr-value {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--ink);
+    }
+
+    /* Tables */
+    .data-table-container {
+      overflow-x: auto;
+      border: 1px solid var(--border-subtle);
+      border-radius: 6px;
+    }
+
+    table.data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+      text-align: left;
+    }
+
+    table.data-table th {
+      background: var(--surface-subtle);
+      padding: 0.75rem 1rem;
+      font-size: 0.74rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--ink-secondary);
+      border-bottom: 1px solid var(--border-subtle);
+      white-space: nowrap;
+    }
+
+    table.data-table td {
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid var(--border-subtle);
+      color: var(--ink-secondary);
+      vertical-align: middle;
+    }
+
+    table.data-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    table.data-table tr:hover td {
+      background-color: #FAF9F6;
+    }
+
+    .btn-action-text {
+      background: transparent;
+      border: 1px solid var(--border-strong);
+      border-radius: 4px;
+      padding: 0.35rem 0.75rem;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--ink);
+      cursor: pointer;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .btn-action-text:hover {
+      border-color: var(--gold);
+      color: var(--gold-dark);
+      background: var(--surface);
+    }
+
+    /* Modal for Paystub Preview */
+    .modal-backdrop {
+      display: flex;
+      position: fixed;
+      inset: 0;
+      background: rgba(23, 22, 20, 0.65);
+      backdrop-filter: blur(4px);
+      z-index: 999;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+
+    .paystub-card {
+      background: var(--surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      width: 100%;
+      max-width: 680px;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 2.25rem 2rem;
+      position: relative;
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.15);
+    }
+
+    .btn-modal-close {
+      position: absolute;
+      top: 1.25rem;
+      right: 1.25rem;
+      background: transparent;
+      border: none;
+      color: var(--ink-muted);
+      cursor: pointer;
+    }
+
+    .btn-modal-close:hover {
+      color: var(--ink);
+    }
+
+    .paystub-header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid var(--ink);
+    }
+
+    .paystub-company-title {
+      font-family: var(--font-brand);
+      font-size: 1.2rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--ink);
+    }
+
+    .paystub-company-sub {
+      font-size: 0.78rem;
+      color: var(--ink-muted);
+    }
+
+    .paystub-section-title {
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--ink);
+      margin: 1.25rem 0 0.5rem;
+    }
+
+    /* Toast */
+    .toast-msg {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: var(--ink);
+      color: var(--surface);
+      padding: 0.75rem 1.25rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+      animation: toastAnim 0.2s ease forwards;
+    }
+
+    @keyframes toastAnim {
+      from { transform: translateY(10px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Root element for mounting HrDashboard React Component -->
+  <div id="root"></div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (window.ReactDOM && window.React && window.HrDashboard) {
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(React.createElement(window.HrDashboard));
+      } else {
+        console.error('Dependencies not loaded for HrDashboard');
+      }
+    });
+  </script>
+</body>
+</html>

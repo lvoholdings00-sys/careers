@@ -1,0 +1,8 @@
+{
+  "name": "Careers · LVO",
+  "description": "LVO Holdings Careers portal and workforce network platform. Explore open roles across promotions, development, facilities, and field operations.",
+  "prompt": "",
+  "capabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

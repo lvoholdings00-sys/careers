@@ -1,62 +1,3383 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Careers · LVO</title>
-<link rel="icon" type="image/png" href="assets/logo.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;900&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
-:root{--gold:#B08D45;--gold2:#C8A96E;--ink:#171614;--muted:#77736B;--paper:#FAF9F6;--line:rgba(176,141,69,.24)}
-html,body{min-height:100%;background:var(--paper)}
-body{color:var(--ink);font-family:'Cormorant Garamond',Georgia,serif}
-body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.025;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
-.page{min-height:100vh;display:flex;flex-direction:column}
-nav{padding:2rem 4rem;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line)}
-.brand{font:600 .95rem 'Cinzel',serif;letter-spacing:.3em;color:var(--ink);text-decoration:none}
-.back{font:.5rem 'Cinzel',serif;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);text-decoration:none}
-.back:hover{color:var(--gold)}
-main{flex:1;display:flex;align-items:center;justify-content:center;text-align:center;padding:6rem 2rem;position:relative}
-main:before{content:"";position:absolute;width:min(700px,90vw);height:min(700px,90vw);border-radius:50%;background:radial-gradient(circle,rgba(200,169,110,.10),transparent 68%);pointer-events:none}
-.content{position:relative;max-width:760px}
-.eyebrow{font:600 .55rem 'Cinzel',serif;letter-spacing:.5em;text-transform:uppercase;color:var(--gold);margin-bottom:2rem}
-.mark{width:58px;height:58px;border:1px solid var(--gold);border-radius:50%;display:grid;place-items:center;margin:0 auto 2rem}
-.mark span{width:7px;height:7px;border:1px solid var(--gold);border-radius:50%}
-h1{font:900 clamp(2.5rem,7vw,5.6rem) 'Cinzel',serif;letter-spacing:.12em;line-height:1;color:var(--ink);margin-bottom:1.4rem}
-.lead{font-size:clamp(1.1rem,2.3vw,1.45rem);font-style:italic;font-weight:300;line-height:1.8;color:#5f5b54;max-width:620px;margin:auto}
-.divider{display:flex;align-items:center;gap:1rem;margin:2.8rem auto;width:min(420px,80vw)}
-.divider:before,.divider:after{content:"";height:1px;background:linear-gradient(to right,transparent,var(--line));flex:1}
-.divider:after{background:linear-gradient(to left,transparent,var(--line))}
-.divider span{font: .45rem 'Cinzel',serif;letter-spacing:.3em;color:var(--gold);text-transform:uppercase}
-.details{font:.52rem 'Cinzel',serif;letter-spacing:.28em;color:#969087;text-transform:uppercase}
-footer{border-top:1px solid var(--line);padding:2rem 4rem;display:flex;justify-content:space-between;gap:1rem;font:.45rem 'Cinzel',serif;letter-spacing:.2em;color:#9a958b;text-transform:uppercase}
-@media(max-width:600px){nav{padding:1.3rem 1.2rem}.back{display:none}main{padding:5rem 1.2rem}footer{padding:1.5rem;flex-direction:column;text-align:center}}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Careers · LVO</title>
+  <meta name="description" content="LVO Holdings Careers portal and workforce network platform. Explore open roles across promotions, development, facilities, and field operations.">
+  <meta property="og:title" content="Careers · LVO">
+  <meta property="og:description" content="LVO Holdings Careers portal and workforce network platform. Explore open roles across promotions, development, facilities, and field operations.">
+  <link rel="icon" type="image/png" href="assets/logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;900&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  
+  <!-- React, ReactDOM, and Recharts dependencies -->
+  <script src="/vendor/prop-types/prop-types.min.js"></script>
+  <script src="/vendor/react/umd/react.production.min.js"></script>
+  <script src="/vendor/react-dom/umd/react-dom.production.min.js"></script>
+  <script src="/vendor/recharts/umd/Recharts.js"></script>
+  
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --canvas: #FBFBFA;
+      --surface: #FFFFFF;
+      --surface-subtle: #F5F4F0;
+      --surface-hover: #EFECE6;
+      --border-subtle: #E8E5DC;
+      --border-strong: #D4D0C5;
+      --ink: #171614;
+      --ink-secondary: #48453E;
+      --ink-muted: #747167;
+      --ink-faint: #A29E93;
+      --gold: #9C7A3C;
+      --gold-dark: #82642F;
+      --gold-surface: #FAF6ED;
+      --gold-border: #E8DCBE;
+      --font-brand: 'Cinzel', Georgia, serif;
+      --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background-color: var(--canvas);
+    }
+
+    body {
+      min-height: 100vh;
+      color: var(--ink);
+      font-family: var(--font-body);
+      background-color: var(--canvas);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .tabular-nums {
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* Top Navigation Bar - Strict 3-zone contract */
+    header.site-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255, 255, 255, 0.98);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-subtle);
+      height: 68px;
+      display: flex;
+      align-items: center;
+    }
+
+    .header-container {
+      width: 100%;
+      max-width: 1360px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+    }
+
+    /* Zone 1: Single element brand mark */
+    .brand-zone {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: var(--ink);
+      flex-shrink: 0;
+    }
+
+    .brand-logo-img {
+      width: 28px;
+      height: 28px;
+      object-fit: contain;
+    }
+
+    .brand-wordmark {
+      font-family: var(--font-brand);
+      font-size: 1.05rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      color: var(--ink);
+      text-transform: uppercase;
+    }
+
+    .brand-wordmark span {
+      color: var(--gold);
+      font-weight: 600;
+      margin-left: 0.25rem;
+    }
+
+    /* Zone 2: Clean 4-6 text navigation links */
+    nav.nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1.75rem;
+    }
+
+    .nav-link {
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: var(--ink-secondary);
+      text-decoration: none;
+      transition: color 0.15s ease;
+      white-space: nowrap;
+      position: relative;
+    }
+
+    .nav-link:hover {
+      color: var(--gold);
+    }
+
+    .nav-link.active {
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+    .nav-link.active::after {
+      content: '';
+      position: absolute;
+      bottom: -22px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background-color: var(--gold);
+    }
+
+    /* Zone 3: 1-2 primary actions */
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      flex-shrink: 0;
+    }
+
+    .btn-saved-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.45rem 0.8rem;
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--ink-secondary);
+      background: transparent;
+      border: 1px solid var(--border-subtle);
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .btn-saved-badge:hover {
+      border-color: var(--border-strong);
+      color: var(--ink);
+    }
+
+    .btn-signin {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.5rem 1.1rem;
+      font-size: 0.84rem;
+      font-weight: 600;
+      color: var(--surface);
+      background-color: var(--ink);
+      border: 1px solid var(--ink);
+      border-radius: 6px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+    }
+
+    .btn-signin:hover {
+      background-color: var(--gold-dark);
+      border-color: var(--gold-dark);
+    }
+
+    /* Subdomain Bridge Banner */
+    .subdomain-banner {
+      background-color: var(--gold-surface);
+      border-bottom: 1px solid var(--gold-border);
+      padding: 0.55rem 1.5rem;
+      font-size: 0.82rem;
+      color: var(--ink-secondary);
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .subdomain-banner strong {
+      color: var(--gold-dark);
+      font-weight: 600;
+    }
+
+    .subdomain-banner-link {
+      color: var(--ink);
+      font-weight: 600;
+      text-decoration: underline;
+      cursor: pointer;
+      transition: color 0.15s ease;
+    }
+
+    .subdomain-banner-link:hover {
+      color: var(--gold-dark);
+    }
+
+    /* Hero & Search Section - Indeed style */
+    .search-hero {
+      background-color: var(--surface);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 3rem 1.5rem 2.5rem;
+    }
+
+    .search-hero-inner {
+      max-width: 1040px;
+      margin: 0 auto;
+    }
+
+    .search-headline-wrap {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .hero-kicker {
+      font-family: var(--font-brand);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.75rem;
+    }
+
+    .hero-title {
+      font-family: var(--font-brand);
+      font-size: clamp(1.9rem, 4vw, 2.75rem);
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: var(--ink);
+      line-height: 1.15;
+      text-wrap: balance;
+    }
+
+    .hero-subtitle {
+      margin-top: 0.75rem;
+      font-size: 1.02rem;
+      color: var(--ink-muted);
+      max-width: 640px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* Indeed-style Unified Search Box */
+    .search-box-container {
+      background: var(--surface);
+      border: 1px solid var(--border-strong);
+      border-radius: 8px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .search-box-container:focus-within {
+      border-color: var(--gold);
+      box-shadow: 0 4px 24px rgba(156, 122, 60, 0.12);
+    }
+
+    @media (min-width: 768px) {
+      .search-box-container {
+        flex-direction: row;
+        align-items: stretch;
+      }
+    }
+
+    .search-field {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      padding: 0.85rem 1.25rem;
+      position: relative;
+    }
+
+    .search-field:first-child {
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    @media (min-width: 768px) {
+      .search-field:first-child {
+        border-bottom: none;
+        border-right: 1px solid var(--border-subtle);
+      }
+    }
+
+    .search-field-icon {
+      color: var(--ink-muted);
+      margin-right: 0.85rem;
+      flex-shrink: 0;
+    }
+
+    .search-field-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .search-field-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--ink);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.15rem;
+    }
+
+    .search-input {
+      border: none;
+      outline: none;
+      background: transparent;
+      font-family: var(--font-body);
+      font-size: 0.96rem;
+      color: var(--ink);
+      width: 100%;
+    }
+
+    .search-input::placeholder {
+      color: var(--ink-faint);
+    }
+
+    .search-btn-wrap {
+      padding: 0.5rem;
+      display: flex;
+      align-items: center;
+    }
+
+    .btn-find-jobs {
+      width: 100%;
+      height: 100%;
+      min-height: 48px;
+      padding: 0 2rem;
+      background-color: var(--ink);
+      color: var(--surface);
+      font-family: var(--font-body);
+      font-size: 0.94rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      transition: background-color 0.15s ease;
+      white-space: nowrap;
+    }
+
+    .btn-find-jobs:hover {
+      background-color: var(--gold-dark);
+    }
+
+    /* Popular Keywords bar */
+    .popular-searches {
+      margin-top: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      font-size: 0.82rem;
+      color: var(--ink-muted);
+    }
+
+    .popular-chip {
+      background: transparent;
+      border: none;
+      color: var(--ink-secondary);
+      font-family: inherit;
+      font-size: inherit;
+      cursor: pointer;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      transition: color 0.15s ease;
+      padding: 0;
+    }
+
+    .popular-chip:hover {
+      color: var(--gold-dark);
+    }
+
+    /* Email Alerts Form in Search Hero */
+    .email-alerts-container {
+      margin-top: 1.6rem;
+      background: #F9F8F4;
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 1.15rem 1.35rem;
+      transition: all 0.2s ease;
+    }
+
+    .email-alerts-container:focus-within {
+      border-color: var(--gold-border);
+      background: var(--surface);
+      box-shadow: 0 4px 16px rgba(156, 122, 60, 0.06);
+    }
+
+    .email-alerts-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 0.85rem;
+    }
+
+    .alerts-title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+    }
+
+    .alerts-icon {
+      color: var(--gold-dark);
+      flex-shrink: 0;
+    }
+
+    .alerts-heading {
+      font-family: var(--font-brand);
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--ink);
+      letter-spacing: 0.04em;
+    }
+
+    .alerts-context-text {
+      font-size: 0.78rem;
+      color: var(--ink-muted);
+    }
+
+    .alerts-context-text strong {
+      color: var(--ink-secondary);
+    }
+
+    .alerts-form {
+      display: flex;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .alert-email-input {
+      flex: 1;
+      min-width: 240px;
+      padding: 0.65rem 0.95rem;
+      background: var(--surface);
+      border: 1px solid var(--border-strong);
+      border-radius: 6px;
+      font-family: var(--font-body);
+      font-size: 0.88rem;
+      color: var(--ink);
+      outline: none;
+      transition: border-color 0.15s ease;
+    }
+
+    .alert-email-input:focus {
+      border-color: var(--gold);
+    }
+
+    .alert-frequency-select {
+      padding: 0.65rem 0.9rem;
+      background: var(--surface);
+      border: 1px solid var(--border-strong);
+      border-radius: 6px;
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      color: var(--ink);
+      outline: none;
+      cursor: pointer;
+    }
+
+    .alert-frequency-select:focus {
+      border-color: var(--gold);
+    }
+
+    .btn-create-alert {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.65rem 1.25rem;
+      background: var(--ink);
+      color: var(--surface);
+      border: 1px solid var(--ink);
+      border-radius: 6px;
+      font-family: var(--font-body);
+      font-size: 0.86rem;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background-color 0.15s ease;
+    }
+
+    .btn-create-alert:hover {
+      background: var(--gold-dark);
+      border-color: var(--gold-dark);
+    }
+
+    /* Saved Alert Ribbon */
+    .saved-alerts-ribbon {
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-top: 0.85rem;
+      padding-top: 0.85rem;
+      border-top: 1px solid var(--border-subtle);
+      font-size: 0.82rem;
+    }
+
+    .saved-alerts-ribbon.active {
+      display: flex;
+    }
+
+    .saved-alert-info {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--ink-secondary);
+      flex-wrap: wrap;
+    }
+
+    .saved-alert-badge {
+      font-family: var(--font-mono);
+      font-size: 0.74rem;
+      padding: 0.15rem 0.5rem;
+      background: var(--gold-surface);
+      border: 1px solid var(--gold-border);
+      border-radius: 4px;
+      color: var(--gold-dark);
+      font-weight: 600;
+    }
+
+    .saved-alert-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+    }
+
+    .btn-apply-saved-alert {
+      background: var(--surface);
+      border: 1px solid var(--border-strong);
+      border-radius: 4px;
+      padding: 0.3rem 0.75rem;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--ink);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      transition: all 0.15s ease;
+    }
+
+    .btn-apply-saved-alert:hover {
+      border-color: var(--gold);
+      color: var(--gold-dark);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    }
+
+    .btn-delete-saved-alert {
+      background: transparent;
+      border: none;
+      color: var(--ink-muted);
+      cursor: pointer;
+      font-size: 0.78rem;
+      text-decoration: underline;
+      padding: 0.25rem;
+      transition: color 0.15s ease;
+    }
+
+    .btn-delete-saved-alert:hover {
+      color: #DC2626;
+    }
+
+    /* Interactive Filters Bar */
+    .filters-bar-section {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 0.85rem 1.5rem;
+    }
+
+    .filters-bar-inner {
+      max-width: 1360px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .filters-bar-inner::-webkit-scrollbar {
+      display: none;
+    }
+
+    .filter-group {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-shrink: 0;
+    }
+
+    .filter-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.4rem 0.85rem;
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--ink-secondary);
+      background-color: var(--surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+    }
+
+    .filter-btn:hover {
+      border-color: var(--border-strong);
+      color: var(--ink);
+    }
+
+    .filter-btn.active {
+      background-color: var(--surface-subtle);
+      border-color: var(--gold);
+      color: var(--gold-dark);
+      font-weight: 600;
+    }
+
+    .filter-btn svg {
+      transition: transform 0.15s ease;
+    }
+
+    .filter-reset-btn {
+      font-size: 0.82rem;
+      color: var(--ink-muted);
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      text-decoration: underline;
+      padding: 0.4rem 0.6rem;
+      white-space: nowrap;
+    }
+
+    .filter-reset-btn:hover {
+      color: var(--ink);
+    }
+
+    /* Main Job Search Split View (Indeed Style) */
+    .main-workspace {
+      max-width: 1360px;
+      margin: 0 auto;
+      padding: 1.75rem 1.5rem 4rem;
+    }
+
+    .results-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.25rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--border-subtle);
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .results-count {
+      font-size: 0.88rem;
+      color: var(--ink-secondary);
+    }
+
+    .results-count strong {
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+    .sort-control {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.84rem;
+      color: var(--ink-muted);
+    }
+
+    .sort-select {
+      background: var(--surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 6px;
+      padding: 0.35rem 0.75rem;
+      font-size: 0.84rem;
+      font-family: inherit;
+      color: var(--ink);
+      outline: none;
+      cursor: pointer;
+    }
+
+    .sort-select:focus {
+      border-color: var(--gold);
+    }
+
+    /* Master-Detail Split Grid */
+    .split-layout {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      align-items: start;
+    }
+
+    @media (min-width: 960px) {
+      .split-layout {
+        grid-template-columns: 460px 1fr;
+      }
+    }
+
+    /* Left Pane: Job Cards Feed */
+    .jobs-feed {
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+
+    .job-card {
+      background: var(--surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 1.25rem;
+      cursor: pointer;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+      position: relative;
+    }
+
+    .job-card:hover {
+      border-color: var(--border-strong);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
+    }
+
+    .job-card.selected {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 1px var(--gold), 0 4px 16px rgba(156, 122, 60, 0.08);
+      background-color: #FCFBF9;
+    }
+
+    .job-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 0.75rem;
+      margin-bottom: 0.35rem;
+    }
+
+    .job-card-title {
+      font-size: 1.08rem;
+      font-weight: 700;
+      color: var(--ink);
+      line-height: 1.3;
+      text-decoration: none;
+    }
+
+    .job-card.selected .job-card-title {
+      color: var(--gold-dark);
+    }
+
+    .job-save-btn {
+      background: transparent;
+      border: none;
+      color: var(--ink-faint);
+      cursor: pointer;
+      padding: 0.25rem;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: color 0.15s ease, transform 0.15s ease;
+    }
+
+    .job-save-btn:hover {
+      color: var(--ink);
+    }
+
+    .job-save-btn.saved {
+      color: var(--gold);
+    }
+
+    .job-card-division {
+      font-size: 0.86rem;
+      font-weight: 600;
+      color: var(--ink-secondary);
+      margin-bottom: 0.35rem;
+    }
+
+    .job-card-location {
+      font-size: 0.84rem;
+      color: var(--ink-muted);
+      margin-bottom: 0.65rem;
+    }
+
+    /* Zero-Pill unboxed metadata */
+    .job-card-meta {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+      font-size: 0.82rem;
+      color: var(--ink-secondary);
+      margin-bottom: 0.75rem;
+    }
+
+    .meta-separator {
+      color: var(--border-strong);
+      user-select: none;
+    }
+
+    .job-card-salary {
+      font-weight: 600;
+      color: var(--ink);
+    }
+
+    .job-card-snippet {
+      font-size: 0.84rem;
+      color: var(--ink-muted);
+      line-height: 1.45;
+      margin-bottom: 0.75rem;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .job-card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.78rem;
+      color: var(--ink-faint);
+      padding-top: 0.6rem;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .apply-channel-hint {
+      color: var(--gold-dark);
+      font-weight: 600;
+      font-size: 0.76rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    /* Right Pane: Detailed Job View (Indeed Style) */
+    .job-detail-pane {
+      background: var(--surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 2rem;
+      position: sticky;
+      top: 86px;
+      max-height: calc(100vh - 100px);
+      overflow-y: auto;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+    }
+
+    .detail-sticky-header {
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border-subtle);
+      margin-bottom: 1.75rem;
+    }
+
+    .detail-title {
+      font-family: var(--font-brand);
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--ink);
+      line-height: 1.25;
+      margin-bottom: 0.5rem;
+    }
+
+    .detail-company-line {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--ink-secondary);
+      margin-bottom: 0.35rem;
+    }
+
+    .detail-company-line a {
+      color: var(--gold-dark);
+      text-decoration: none;
+    }
+
+    .detail-company-line a:hover {
+      text-decoration: underline;
+    }
+
+    .detail-location-line {
+      font-size: 0.88rem;
+      color: var(--ink-muted);
+      margin-bottom: 1.25rem;
+    }
+
+    /* Actions Bar */
+    .detail-actions-bar {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      flex-wrap: wrap;
+    }
+
+    .btn-apply-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      padding: 0.75rem 1.6rem;
+      background-color: var(--ink);
+      color: var(--surface);
+      font-size: 0.92rem;
+      font-weight: 600;
+      border: 1px solid var(--ink);
+      border-radius: 6px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background-color 0.15s ease, border-color 0.15s ease;
+    }
+
+    .btn-apply-primary:hover {
+      background-color: var(--gold-dark);
+      border-color: var(--gold-dark);
+    }
+
+    .btn-save-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.72rem 1.25rem;
+      background: transparent;
+      color: var(--ink);
+      font-size: 0.88rem;
+      font-weight: 600;
+      border: 1px solid var(--border-strong);
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .btn-save-secondary:hover {
+      background: var(--surface-subtle);
+      border-color: var(--ink);
+    }
+
+    .btn-share {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 42px;
+      height: 42px;
+      background: transparent;
+      border: 1px solid var(--border-subtle);
+      border-radius: 6px;
+      color: var(--ink-secondary);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .btn-share:hover {
+      border-color: var(--ink);
+      color: var(--ink);
+    }
+
+    /* Job Overview Matrix */
+    .detail-overview-section {
+      background-color: var(--surface-subtle);
+      border: 1px solid var(--border-subtle);
+      border-radius: 6px;
+      padding: 1.25rem;
+      margin-bottom: 2rem;
+    }
+
+    .overview-heading {
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--ink);
+      margin-bottom: 0.85rem;
+    }
+
+    .overview-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+
+    .overview-item-label {
+      font-size: 0.75rem;
+      color: var(--ink-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.2rem;
+    }
+
+    .overview-item-val {
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: var(--ink);
+    }
+
+    /* Job Description Body Typography */
+    .job-description-content {
+      color: var(--ink-secondary);
+      font-size: 0.94rem;
+      line-height: 1.7;
+    }
+
+    .job-description-content h3 {
+      font-family: var(--font-brand);
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--ink);
+      margin: 1.75rem 0 0.75rem;
+      letter-spacing: 0.02em;
+    }
+
+    .job-description-content h3:first-child {
+      margin-top: 0;
+    }
+
+    .job-description-content p {
+      margin-bottom: 1rem;
+    }
+
+    .job-description-content ul {
+      margin: 0.5rem 0 1.25rem 1.25rem;
+    }
+
+    .job-description-content li {
+      margin-bottom: 0.45rem;
+    }
+
+    /* Subdomain callout inside description */
+    .subdomain-application-callout {
+      margin-top: 2rem;
+      padding: 1.5rem;
+      background: var(--gold-surface);
+      border: 1px solid var(--gold-border);
+      border-radius: 6px;
+    }
+
+    .callout-title {
+      font-family: var(--font-brand);
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--gold-dark);
+      margin-bottom: 0.5rem;
+    }
+
+    .callout-text {
+      font-size: 0.88rem;
+      color: var(--ink-secondary);
+      margin-bottom: 1rem;
+    }
+
+    /* Modal Component for Login to job.wearelvo.com */
+    .modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(23, 22, 20, 0.6);
+      backdrop-filter: blur(4px);
+      z-index: 999;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .modal-card {
+      background: var(--surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      width: 100%;
+      max-width: 440px;
+      padding: 2.25rem 2rem;
+      position: relative;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+      animation: modalFade 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes modalFade {
+      from {
+        opacity: 0;
+        transform: translateY(16px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .modal-close-btn {
+      position: absolute;
+      top: 1.25rem;
+      right: 1.25rem;
+      background: transparent;
+      border: none;
+      color: var(--ink-muted);
+      cursor: pointer;
+      padding: 0.25rem;
+      transition: color 0.15s ease;
+    }
+
+    .modal-close-btn:hover {
+      color: var(--ink);
+    }
+
+    .modal-kicker {
+      font-family: var(--font-brand);
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.4rem;
+    }
+
+    .modal-title {
+      font-family: var(--font-brand);
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 0.5rem;
+    }
+
+    .modal-desc {
+      font-size: 0.86rem;
+      color: var(--ink-muted);
+      margin-bottom: 1.5rem;
+      line-height: 1.5;
+    }
+
+    .modal-subdomain-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.3rem 0.65rem;
+      background: var(--surface-subtle);
+      border: 1px solid var(--border-subtle);
+      border-radius: 4px;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--ink-secondary);
+      margin-bottom: 1.25rem;
+      width: 100%;
+    }
+
+    .form-group {
+      margin-bottom: 1.1rem;
+      text-align: left;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 0.76rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--ink-secondary);
+      margin-bottom: 0.35rem;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 0.75rem 0.9rem;
+      background: var(--surface);
+      border: 1px solid var(--border-strong);
+      border-radius: 6px;
+      font-family: var(--font-body);
+      font-size: 0.92rem;
+      color: var(--ink);
+      outline: none;
+      transition: border-color 0.15s ease;
+    }
+
+    .form-input:focus {
+      border-color: var(--gold);
+    }
+
+    .form-row-remember {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.25rem;
+      font-size: 0.82rem;
+    }
+
+    .form-checkbox-label {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      color: var(--ink-secondary);
+      cursor: pointer;
+    }
+
+    .forgot-link {
+      color: var(--gold-dark);
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .forgot-link:hover {
+      text-decoration: underline;
+    }
+
+    .modal-btn-submit {
+      width: 100%;
+      padding: 0.85rem;
+      background-color: var(--ink);
+      color: var(--surface);
+      font-family: var(--font-body);
+      font-size: 0.92rem;
+      font-weight: 600;
+      border: 1px solid var(--ink);
+      border-radius: 6px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      transition: background-color 0.15s ease;
+    }
+
+    .modal-btn-submit:hover {
+      background-color: var(--gold-dark);
+      border-color: var(--gold-dark);
+    }
+
+    .modal-direct-link {
+      display: block;
+      text-align: center;
+      margin-top: 1.25rem;
+      font-size: 0.84rem;
+      color: var(--ink-muted);
+      text-decoration: none;
+      transition: color 0.15s ease;
+    }
+
+    .modal-direct-link:hover {
+      color: var(--gold-dark);
+    }
+
+    /* Toast Notification */
+    .toast-notice {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: var(--ink);
+      color: var(--surface);
+      padding: 0.75rem 1.25rem;
+      border-radius: 6px;
+      font-size: 0.86rem;
+      font-weight: 500;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .toast-notice.show {
+      display: flex;
+      animation: toastIn 0.2s ease forwards;
+    }
+
+    @keyframes toastIn {
+      from { transform: translateY(12px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    /* Footer */
+    footer.site-footer {
+      border-top: 1px solid var(--border-subtle);
+      background: var(--surface);
+      padding: 3rem 1.5rem 2rem;
+      margin-top: auto;
+    }
+
+    .footer-container {
+      max-width: 1360px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .footer-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 2rem;
+    }
+
+    .footer-brand {
+      max-width: 360px;
+    }
+
+    .footer-brand-title {
+      font-family: var(--font-brand);
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      color: var(--ink);
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+    }
+
+    .footer-brand-desc {
+      font-size: 0.85rem;
+      color: var(--ink-muted);
+      line-height: 1.6;
+    }
+
+    .footer-links-grid {
+      display: flex;
+      gap: 3rem;
+      flex-wrap: wrap;
+    }
+
+    .footer-col-title {
+      font-family: var(--font-brand);
+      font-size: 0.74rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--ink);
+      margin-bottom: 0.85rem;
+    }
+
+    .footer-links-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+    }
+
+    .footer-links-list a {
+      font-size: 0.84rem;
+      color: var(--ink-muted);
+      text-decoration: none;
+      transition: color 0.15s ease;
+    }
+
+    .footer-links-list a:hover {
+      color: var(--gold-dark);
+    }
+
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border-subtle);
+      font-size: 0.78rem;
+      color: var(--ink-faint);
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    /* Mobile Back Button when viewing detail */
+    .mobile-back-row {
+      display: none;
+      margin-bottom: 1rem;
+    }
+
+    @media (max-width: 959px) {
+      .job-detail-pane.mobile-hidden {
+        display: none;
+      }
+      .jobs-feed.mobile-hidden {
+        display: none;
+      }
+      .mobile-back-row.active {
+        display: block;
+      }
+      .btn-mobile-back {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        background: transparent;
+        border: 1px solid var(--border-subtle);
+        border-radius: 6px;
+        padding: 0.45rem 0.85rem;
+        font-size: 0.84rem;
+        font-weight: 600;
+        color: var(--ink);
+        cursor: pointer;
+      }
+    }
+
+    /* Recruitment Stages Progress Stepper */
+    .recruitment-stages-container {
+      background: var(--surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 1.15rem 1.25rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+    }
+
+    .stages-top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .stages-kicker {
+      font-family: var(--font-brand);
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--gold-dark);
+    }
+
+    .stages-meta {
+      font-size: 0.76rem;
+      color: var(--ink-muted);
+    }
+
+    .stepper-track {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      gap: 0.25rem;
+    }
+
+    .stepper-step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      cursor: pointer;
+      z-index: 2;
+      flex: 1;
+      transition: transform 0.15s ease;
+    }
+
+    .stepper-step:hover {
+      transform: translateY(-1px);
+    }
+
+    .step-node {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.78rem;
+      font-weight: 700;
+      margin-bottom: 0.4rem;
+      border: 2px solid var(--border-strong);
+      background: var(--surface);
+      color: var(--ink-secondary);
+      transition: all 0.2s ease;
+    }
+
+    .stepper-step.active .step-node {
+      background: var(--gold);
+      border-color: var(--gold);
+      color: #FFFFFF;
+      box-shadow: 0 0 0 4px rgba(156, 122, 60, 0.18);
+    }
+
+    .stepper-step.completed .step-node {
+      background: var(--ink);
+      border-color: var(--ink);
+      color: #FFFFFF;
+    }
+
+    .step-name {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--ink);
+      line-height: 1.2;
+    }
+
+    .stepper-step.active .step-name {
+      color: var(--gold-dark);
+    }
+
+    .step-detail {
+      font-size: 0.72rem;
+      color: var(--ink-muted);
+      margin-top: 0.15rem;
+    }
+
+    .stepper-line {
+      flex: 1;
+      height: 2px;
+      background: var(--border-subtle);
+      margin: 0 -0.5rem 1.6rem;
+      z-index: 1;
+    }
+
+    .stepper-line.active {
+      background: var(--gold-border);
+    }
+
+    .stage-callout-bubble {
+      margin-top: 0.85rem;
+      padding: 0.65rem 0.85rem;
+      background: var(--gold-surface);
+      border: 1px solid var(--gold-border);
+      border-radius: 6px;
+      font-size: 0.8rem;
+      color: var(--ink-secondary);
+      line-height: 1.45;
+    }
+
+    .stage-callout-bubble strong {
+      color: var(--gold-dark);
+    }
+
+    /* Salary Benchmark & Recharts Container */
+    .salary-benchmark-section {
+      background: var(--surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 1.25rem 1.5rem;
+      margin-top: 1.25rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .benchmark-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .benchmark-title {
+      font-family: var(--font-brand);
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 0.25rem;
+      letter-spacing: 0.04em;
+    }
+
+    .benchmark-sub {
+      font-size: 0.82rem;
+      color: var(--ink-muted);
+      line-height: 1.4;
+    }
+
+    .benchmark-badge {
+      font-size: 0.76rem;
+      font-weight: 600;
+      padding: 0.25rem 0.6rem;
+      border-radius: 4px;
+      background: var(--surface-subtle);
+      border: 1px solid var(--border-subtle);
+      white-space: nowrap;
+    }
+
+    .salary-chart-container {
+      width: 100%;
+      height: 210px;
+      min-height: 210px;
+      position: relative;
+    }
+
+    .benchmark-footer-stats {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      padding-top: 0.85rem;
+      margin-top: 0.75rem;
+      border-top: 1px solid var(--border-subtle);
+      font-size: 0.8rem;
+    }
+
+    .benchmark-stat-item {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      color: var(--ink-secondary);
+    }
+
+    .stat-indicator {
+      width: 10px;
+      height: 10px;
+      border-radius: 2px;
+      display: inline-block;
+    }
+
+    .stat-name {
+      color: var(--ink-muted);
+    }
+  </style>
 </head>
 <body>
-<div class="page">
-<nav>
-  <a class="brand" href="https://wearelvo.com">LVO</a>
-  <a class="back" href="https://wearelvo.com">← LVO Holdings</a>
-</nav>
-<main>
-  <section class="content">
-    <p class="eyebrow">LVO Careers · Access Temporarily Restricted</p>
-    <div class="mark"><span></span></div>
-    <h1>We're Rebuilding.</h1>
-    <p class="lead">Our careers platform is temporarily unavailable while we make improvements behind the scenes.</p>
-    <div class="divider"><span>Careers</span></div>
-    <p class="details">Opportunities will return shortly</p>
+
+  <!-- Subdomain Bridge Banner -->
+  <aside class="subdomain-banner">
+    <span>Welcome to LVO Careers. Applicant portal &amp; application tracking are powered by <strong>job.wearelvo.com</strong></span>
+    <span aria-hidden="true">·</span>
+    <a class="subdomain-banner-link" onclick="openLoginModal('Workforce Portal')">Sign in to your Applicant Account →</a>
+  </aside>
+
+  <!-- Top Bar Contract: Zone 1 (Brand), Zone 2 (4-6 links), Zone 3 (1-2 actions) -->
+  <header class="site-header">
+    <div class="header-container">
+      <!-- Zone 1: Single element brand mark -->
+      <a href="/" class="brand-zone">
+        <img src="assets/logo.png" alt="LVO Holdings Logo" class="brand-logo-img">
+        <span class="brand-wordmark">LVO<span>Careers</span></span>
+      </a>
+
+      <!-- Zone 2: 4-6 text navigation links -->
+      <nav class="nav-links">
+        <a href="#find-jobs" class="nav-link active">Find Jobs</a>
+        <a href="#divisions" class="nav-link" onclick="filterByDivision('all')">Divisions</a>
+        <a href="#salaries" class="nav-link" onclick="openSalaryOverview()">Salaries</a>
+        <a href="#about" class="nav-link" onclick="scrollToAbout()">Company</a>
+        <a href="https://wearelvo.com" target="_blank" rel="noopener noreferrer" class="nav-link">LVO Holdings ↗</a>
+      </nav>
+
+      <!-- Zone 3: 1-2 primary actions -->
+      <div class="header-actions">
+        <button type="button" class="btn-saved-badge" id="headerSavedBtn" onclick="toggleSavedFilter()" title="View saved jobs">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/>
+          </svg>
+          <span>Saved (<span id="savedCounter" class="tabular-nums">0</span>)</span>
+        </button>
+        <button type="button" class="btn-signin" onclick="openLoginModal('Top Navigation')">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+            <polyline points="10 17 15 12 10 7"/>
+            <line x1="15" y1="12" x2="3" y2="12"/>
+          </svg>
+          <span>Sign In to job.wearelvo.com</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Indeed-Style Search Hero -->
+  <section class="search-hero" id="find-jobs">
+    <div class="search-hero-inner">
+      <div class="search-headline-wrap">
+        <p class="hero-kicker">LVO Workforce &amp; Resource Network</p>
+        <h1 class="hero-title">Find your next role at LVO Holdings</h1>
+        <p class="hero-subtitle">Explore opportunities across promotions, software engineering, facilities logistics, and field operations.</p>
+      </div>
+
+      <!-- Unified Dual Search Box -->
+      <div class="search-box-container">
+        <div class="search-field">
+          <div class="search-field-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"/>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+          </div>
+          <div class="search-field-content">
+            <label for="searchInputWhat" class="search-field-label">What</label>
+            <input type="text" id="searchInputWhat" class="search-input" placeholder="Job title, keywords, or division" autocomplete="off">
+          </div>
+        </div>
+
+        <div class="search-field">
+          <div class="search-field-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2a8 8 0 0 0-8 8c0 5.25 8 12 8 12s8-6.75 8-12a8 8 0 0 0-8-8z"/>
+              <circle cx="12" cy="10" r="3"/>
+            </svg>
+          </div>
+          <div class="search-field-content">
+            <label for="searchInputWhere" class="search-field-label">Where</label>
+            <input type="text" id="searchInputWhere" class="search-input" placeholder="City, state, or 'Remote'" value="Houston, TX" autocomplete="off">
+          </div>
+        </div>
+
+        <div class="search-btn-wrap">
+          <button type="button" class="btn-find-jobs" onclick="triggerSearch()">
+            <span>Find Jobs</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Popular Searches / Hot Divisions -->
+      <div class="popular-searches">
+        <span>Popular queries:</span>
+        <button type="button" class="popular-chip" onclick="applySearchQuery('Systems Architect', '')">Systems Architect</button>
+        <span>·</span>
+        <button type="button" class="popular-chip" onclick="applySearchQuery('Field Operations', '')">Field Operations</button>
+        <span>·</span>
+        <button type="button" class="popular-chip" onclick="applySearchQuery('Logistics', '')">Logistics</button>
+        <span>·</span>
+        <button type="button" class="popular-chip" onclick="applySearchQuery('Promotions', '')">Brand &amp; Promotions</button>
+        <span>·</span>
+        <button type="button" class="popular-chip" onclick="applySearchQuery('', 'Remote')">Remote Roles</button>
+      </div>
+
+      <!-- Get Email Alerts Form (Persisted to Local Storage) -->
+      <div class="email-alerts-container">
+        <div class="email-alerts-header">
+          <div class="alerts-title-wrap">
+            <svg class="alerts-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/>
+              <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>
+            </svg>
+            <span class="alerts-heading">Get Email Alerts For This Search</span>
+          </div>
+          <div class="alerts-context-text" id="alertsContextText">
+            Matching: <strong id="alertsSearchSummary">All Open Roles in Houston, TX</strong>
+          </div>
+        </div>
+
+        <form class="alerts-form" id="emailAlertsForm" onsubmit="handleSaveEmailAlert(event)">
+          <input 
+            type="email" 
+            id="alertEmailInput" 
+            class="alert-email-input" 
+            placeholder="Enter your email to receive matching role alerts" 
+            required 
+            autocomplete="email"
+          >
+          <select id="alertFrequencySelect" class="alert-frequency-select" title="Notification Frequency">
+            <option value="daily">Daily Alerts</option>
+            <option value="weekly">Weekly Digest</option>
+          </select>
+          <button type="submit" class="btn-create-alert">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+              <polyline points="17 21 17 13 7 13 7 21"/>
+              <polyline points="7 3 7 8 15 8"/>
+            </svg>
+            <span>Activate Alert</span>
+          </button>
+        </form>
+
+        <!-- Saved Alert Summary & Restore Controls (persisted in local storage) -->
+        <div class="saved-alerts-ribbon" id="savedAlertRibbon">
+          <div class="saved-alert-info">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--gold);">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+              <polyline points="22 4 12 14.01 9 11.01"/>
+            </svg>
+            <span>Active Saved Preference:</span>
+            <span class="saved-alert-badge" id="savedAlertCriteriaBadge">Loading...</span>
+            <span id="savedAlertEmailDisplay" style="color: var(--ink-muted); font-size: 0.78rem;"></span>
+          </div>
+          <div class="saved-alert-actions">
+            <button type="button" class="btn-apply-saved-alert" onclick="applySavedAlertPreferences()" title="Restore this search filter">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="1 4 1 10 7 10"/>
+                <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/>
+              </svg>
+              <span>Apply Filter</span>
+            </button>
+            <button type="button" class="btn-delete-saved-alert" onclick="deleteSavedAlert()" title="Delete saved alert">
+              Remove
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   </section>
-</main>
-<footer>
-  <span>LVO Holdings</span>
-  <span>&copy; 2026 · All Rights Reserved</span>
-</footer>
-</div>
-<script src="https://lvo-cloud.cloud/assets/lvo-status.js" data-division="Careers" defer></script>
+
+  <!-- Interactive Segmented Filters Bar -->
+  <section class="filters-bar-section">
+    <div class="filters-bar-inner">
+      <div class="filter-group" id="divisionFilterButtons">
+        <button type="button" class="filter-btn active" data-filter="division" data-val="all" onclick="setDivisionFilter('all')">All Divisions</button>
+        <button type="button" class="filter-btn" data-filter="division" data-val="development" onclick="setDivisionFilter('development')">Development &amp; Tech</button>
+        <button type="button" class="filter-btn" data-filter="division" data-val="facilities" onclick="setDivisionFilter('facilities')">Facilities &amp; Logistics</button>
+        <button type="button" class="filter-btn" data-filter="division" data-val="field" onclick="setDivisionFilter('field')">Field Support</button>
+        <button type="button" class="filter-btn" data-filter="division" data-val="promotions" onclick="setDivisionFilter('promotions')">Promotions &amp; Media</button>
+      </div>
+
+      <div class="filter-group">
+        <button type="button" class="filter-btn" id="filterWorkplaceBtn" onclick="cycleWorkplaceFilter()">
+          <span id="workplaceFilterLabel">Workplace: Any</span>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+
+        <button type="button" class="filter-btn" id="filterSalaryBtn" onclick="cycleSalaryFilter()">
+          <span id="salaryFilterLabel">Pay: Any</span>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+
+        <button type="button" class="filter-reset-btn" onclick="resetAllFilters()">Reset all</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Master-Detail Split Workspace -->
+  <main class="main-workspace">
+    <!-- Results Header -->
+    <div class="results-header">
+      <div class="results-count">
+        <span id="resultsCountText">Showing <strong>8</strong> open roles at LVO Holdings</span>
+      </div>
+      <div class="sort-control">
+        <label for="sortSelect">Sort by:</label>
+        <select id="sortSelect" class="sort-select" onchange="handleSortChange()">
+          <option value="relevance">Relevance</option>
+          <option value="date">Date (Newest)</option>
+          <option value="salary">Salary (Highest)</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Mobile Back Button Row -->
+    <div class="mobile-back-row" id="mobileBackRow">
+      <button type="button" class="btn-mobile-back" onclick="closeMobileDetail()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+        <span>Back to search results</span>
+      </button>
+    </div>
+
+    <!-- Master-Detail Split Container -->
+    <div class="split-layout">
+      <!-- Left Column: Job Cards List -->
+      <section class="jobs-feed" id="jobsFeed" aria-label="Job listings"></section>
+
+      <!-- Right Column: Job Detail View Pane -->
+      <aside class="job-detail-pane" id="jobDetailPane" aria-label="Job description preview">
+        <!-- Rendered dynamically via JavaScript -->
+      </aside>
+    </div>
+  </main>
+
+  <!-- Modal: Sign In / Access job.wearelvo.com -->
+  <div class="modal-backdrop" id="loginModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-card">
+      <button type="button" class="modal-close-btn" onclick="closeLoginModal()" aria-label="Close modal">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"/>
+          <line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+
+      <p class="modal-kicker">LVO Workforce Network</p>
+      <h2 class="modal-title" id="modalTitle">Sign In to job.wearelvo.com</h2>
+      <p class="modal-desc">Access your applicant dashboard, track job applications, and complete onboarding on the central workforce subdomain.</p>
+
+      <div class="modal-subdomain-pill">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+          <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+        </svg>
+        <span>Destination: https://job.wearelvo.com</span>
+      </div>
+
+      <form id="workforceLoginForm" onsubmit="handleModalLogin(event)">
+        <div class="form-group">
+          <label for="loginIdentifier" class="form-label">Email or Applicant ID</label>
+          <input type="text" id="loginIdentifier" class="form-input" placeholder="applicant@wearelvo.com" required autocomplete="username">
+        </div>
+
+        <div class="form-group">
+          <label for="loginPassword" class="form-label">Password</label>
+          <input type="password" id="loginPassword" class="form-input" placeholder="••••••••••••" required autocomplete="current-password">
+        </div>
+
+        <div class="form-row-remember">
+          <label class="form-checkbox-label">
+            <input type="checkbox" id="rememberMe" checked>
+            <span>Keep me signed in</span>
+          </label>
+          <a class="forgot-link" onclick="handleForgotPassword()">Forgot password?</a>
+        </div>
+
+        <button type="submit" class="modal-btn-submit" id="modalSubmitBtn">
+          <span>Authenticate &amp; Proceed to job.wearelvo.com</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="5" y1="12" x2="19" y2="12"/>
+            <polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </button>
+
+        <p style="font-size: 0.76rem; color: var(--ink-faint); margin-top: 0.9rem; text-align: center; line-height: 1.45;">
+          By signing in, you agree to our 
+          <a href="https://tos.wearelvo.com/" target="_blank" rel="noopener noreferrer" style="color: var(--ink-secondary); text-decoration: underline;">Terms of Service</a> 
+          and acknowledge our 
+          <a href="https://privacy.wearelvo.com/" target="_blank" rel="noopener noreferrer" style="color: var(--ink-secondary); text-decoration: underline;">Privacy Policy</a>.
+        </p>
+
+        <div style="display: flex; flex-direction: column; gap: 0.4rem; margin-top: 1rem; text-align: center;">
+          <a href="/dashboard" class="modal-direct-link" style="font-weight: 600; color: var(--gold-dark); text-decoration: underline;">
+            Direct link: Enter Workforce HR Dashboard (job.wearelvo.com) →
+          </a>
+          <a href="https://job.wearelvo.com" class="modal-direct-link" target="_blank" rel="noopener noreferrer" style="font-size: 0.78rem;">
+            External live subdomain: https://job.wearelvo.com ↗
+          </a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-notice" id="toastNotice">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+      <polyline points="22 4 12 14.01 9 11.01"/>
+    </svg>
+    <span id="toastMessage">Action completed</span>
+  </div>
+
+  <!-- Footer -->
+  <footer class="site-footer" id="about">
+    <div class="footer-container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div class="footer-brand-title">LVO Holdings</div>
+          <p class="footer-brand-desc">
+            A multi-division enterprise spanning promotions, software development, facilities logistics, and field operations. We operate across public engagements, digital ecosystems, and critical infrastructure.
+          </p>
+        </div>
+
+        <div class="footer-links-grid">
+          <div>
+            <div class="footer-col-title">Careers Portal</div>
+            <ul class="footer-links-list">
+              <li><a href="#find-jobs" onclick="setDivisionFilter('all')">All Open Roles</a></li>
+              <li><a href="/dashboard">Workforce &amp; HR Dashboard (job.wearelvo.com)</a></li>
+              <li><a onclick="openLoginModal('Footer link')">Applicant Sign In</a></li>
+              <li><a onclick="toggleSavedFilter()">Saved Applications</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <div class="footer-col-title">Divisions</div>
+            <ul class="footer-links-list">
+              <li><a onclick="setDivisionFilter('development')">Development &amp; Systems</a></li>
+              <li><a onclick="setDivisionFilter('facilities')">Facilities &amp; Fleet Logistics</a></li>
+              <li><a onclick="setDivisionFilter('field')">Field Technical Support</a></li>
+              <li><a onclick="setDivisionFilter('promotions')">Promotions &amp; Public Media</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <div class="footer-col-title">Governance &amp; Legal</div>
+            <ul class="footer-links-list">
+              <li><a href="https://tos.wearelvo.com/" target="_blank" rel="noopener noreferrer">Terms of Service ↗</a></li>
+              <li><a href="https://privacy.wearelvo.com/" target="_blank" rel="noopener noreferrer">Privacy Policy ↗</a></li>
+              <li><a href="https://wearelvo.com" target="_blank" rel="noopener noreferrer">Corporate Parent</a></li>
+              <li><a href="mailto:accountrecovery@wearelvo.com">Account Recovery</a></li>
+              <li><a href="mailto:careers@wearelvo.com">Recruiting Inquiries</a></li>
+              <li><a onclick="showEEOModal()">Equal Opportunity Notice</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>&copy; 2026 LVO Holdings · Legion V. Omni-Operation Holdings · Houston, Texas. All Rights Reserved.</span>
+        <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
+          <a href="https://tos.wearelvo.com/" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: none;">Terms of Service</a>
+          <span aria-hidden="true" style="color: var(--border-strong);">·</span>
+          <a href="https://privacy.wearelvo.com/" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: none;">Privacy Policy</a>
+          <span aria-hidden="true" style="color: var(--border-strong);">·</span>
+          <span>Equal Opportunity Employer</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Core Job Data & Application Logic -->
+  <script>
+    // Comprehensive Dataset of Open Roles at LVO Holdings
+    const JOBS_DATA = [
+      {
+        id: "lvo-dev-01",
+        title: "Senior Systems Architect",
+        division: "Development & Systems",
+        divisionKey: "development",
+        location: "Houston, TX",
+        workplace: "Hybrid",
+        jobType: "Full-time",
+        experience: "Senior / Lead",
+        salaryMin: 165000,
+        salaryMax: 195000,
+        salaryDisplay: "$165,000 - $195,000 a year",
+        postedDaysAgo: 1,
+        urgent: true,
+        summary: "Architect high-availability distributed services, manage D1/edge worker infrastructure, and oversee unified authentication systems connecting all LVO digital divisions.",
+        overview: {
+          schedule: "Monday to Friday · Flexible core hours",
+          benefits: "Medical, Dental, Vision · 6% 401(k) Match · Unlimited PTO · Equipment Stipend",
+          department: "Core Engineering & Digital Infrastructure"
+        },
+        description: `
+          <h3>Role Overview</h3>
+          <p>LVO Holdings is seeking a Senior Systems Architect to lead architectural evolution across our digital portfolio, including the central workforce infrastructure, division authentication services, and real-time operations dashboards.</p>
+          
+          <h3>Core Responsibilities</h3>
+          <ul>
+            <li>Design and maintain high-throughput edge worker pipelines, caching layers, and token authentication services connecting all LVO subdomains.</li>
+            <li>Partner with division engineering leads in Houston to standardize API contracts, security practices, and deployment pipelines.</li>
+            <li>Lead incident post-mortems and enforce strict zero-downtime reliability across all public-facing platforms.</li>
+            <li>Evaluate and deploy emerging database, telemetry, and compute frameworks suited to LVO's multi-tenant structure.</li>
+          </ul>
+
+          <h3>Required Qualifications</h3>
+          <ul>
+            <li>7+ years designing and running distributed web systems and microservices in production.</li>
+            <li>Deep proficiency with TypeScript, Node.js, distributed KV/relational storage, and cloud worker runtimes.</li>
+            <li>Demonstrated track record maintaining cryptographic auth flows (OAuth2, JWT, PKCE, session synchronization).</li>
+            <li>Strong architectural communication skills and ability to mentor mid-level engineering personnel.</li>
+          </ul>
+
+          <h3>Compensation &amp; Perks</h3>
+          <p>Base salary of $165,000 - $195,000 depending on seniority and depth of systems architecture experience. Includes performance bonus, executive health benefits, and 401(k) retirement contributions with immediate vesting.</p>
+        `
+      },
+      {
+        id: "lvo-fac-01",
+        title: "Operations & Facilities Director",
+        division: "Facilities & Logistics",
+        divisionKey: "facilities",
+        location: "Houston, TX",
+        workplace: "On-site",
+        jobType: "Full-time",
+        experience: "Director",
+        salaryMin: 140000,
+        salaryMax: 170000,
+        salaryDisplay: "$140,000 - $170,000 a year",
+        postedDaysAgo: 3,
+        urgent: false,
+        summary: "Direct day-to-day facilities management, fleet dispatch protocols, safety compliance, and physical infrastructure across LVO's Gulf Coast sites.",
+        overview: {
+          schedule: "Full-time On-site · Operational leadership",
+          benefits: "Comprehensive Health & Life · Company Vehicle · 401(k) Plan · Discretionary Bonus",
+          department: "Facilities & Physical Infrastructure"
+        },
+        description: `
+          <h3>Role Overview</h3>
+          <p>We are seeking an experienced Operations & Facilities Director to steward LVO Holdings' physical infrastructure, headquarters operations, and multi-site logistics footprint in Houston, Texas.</p>
+          
+          <h3>Core Responsibilities</h3>
+          <ul>
+            <li>Direct physical facility operations, building automation systems, vendor contracts, and HVAC/power maintenance schedules.</li>
+            <li>Oversee regional fleet management, vehicle safety programs, asset tracking, and preventive maintenance logs.</li>
+            <li>Ensure rigorous compliance with OSHA, EPA, and municipal life-safety regulations across all operational facilities.</li>
+            <li>Lead capital expenditure proposals for physical expansions, tooling upgrades, and workspace modernizations.</li>
+          </ul>
+
+          <h3>Required Qualifications</h3>
+          <ul>
+            <li>8+ years in commercial facilities management, physical plant operations, or corporate real estate logistics.</li>
+            <li>Certified Facility Manager (CFM) or equivalent professional credential strongly preferred.</li>
+            <li>Demonstrated leadership overseeing multi-discipline teams of maintenance technicians, coordinators, and contractors.</li>
+          </ul>
+        `
+      },
+      {
+        id: "lvo-prom-01",
+        title: "Brand Strategy & Promotions Lead",
+        division: "Promotions & Media",
+        divisionKey: "promotions",
+        location: "Houston, TX",
+        workplace: "Hybrid",
+        jobType: "Full-time",
+        experience: "Mid-Senior",
+        salaryMin: 115000,
+        salaryMax: 145000,
+        salaryDisplay: "$115,000 - $145,000 a year",
+        postedDaysAgo: 2,
+        urgent: true,
+        summary: "Drive high-impact public campaigns, media sponsorships, corporate partnerships, and brand narrative for LVO Holdings and subsidiary divisions.",
+        overview: {
+          schedule: "Monday to Friday · Hybrid schedule",
+          benefits: "Full Medical/Vision/Dental · Creative Stipend · Travel Allowance · 401(k)",
+          department: "Promotions, Public Affairs & Creative"
+        },
+        description: `
+          <h3>Role Overview</h3>
+          <p>LVO Promotions is the public-facing vanguard of our holding company. We are looking for a Brand Strategy & Promotions Lead to craft compelling campaigns, manage partner activations, and unify brand presentation across public engagements.</p>
+          
+          <h3>Core Responsibilities</h3>
+          <ul>
+            <li>Formulate multi-channel promotional campaigns across digital, print, and experiential brand installations.</li>
+            <li>Coordinate high-profile partner engagements, sponsorships, and commercial media releases.</li>
+            <li>Uphold the LVO editorial standard and luxury visual identity across digital touchpoints and investor materials.</li>
+            <li>Analyze campaign engagement metrics, attendance data, and audience conversion to refine promotional ROI.</li>
+          </ul>
+
+          <h3>Required Qualifications</h3>
+          <ul>
+            <li>5+ years leading brand strategy, public promotions, or agency creative direction.</li>
+            <li>Impeccable visual taste, copywriting talent, and familiarity with luxury or institutional corporate positioning.</li>
+            <li>Demonstrated ability to produce polished deliverables under tight launch schedules.</li>
+          </ul>
+        `
+      },
+      {
+        id: "lvo-field-01",
+        title: "Field Operations Supervisor",
+        division: "Field Support",
+        divisionKey: "field",
+        location: "Austin, TX",
+        workplace: "On-site",
+        jobType: "Full-time",
+        experience: "Mid Level",
+        salaryMin: 85000,
+        salaryMax: 105000,
+        salaryDisplay: "$85,000 - $105,000 a year",
+        postedDaysAgo: 4,
+        urgent: false,
+        summary: "Lead regional field crews, coordinate technical deployments, and maintain quality assurance standards for on-site client and infrastructure installations.",
+        overview: {
+          schedule: "Field deployment · Rotational weekend coverage",
+          benefits: "Company Truck · Overtime Eligibility · Health/Dental · Tool Allowance",
+          department: "Field Technical Support & Deployment"
+        },
+        description: `
+          <h3>Role Overview</h3>
+          <p>Join LVO Field Support as a Supervisor in Central Texas. You will coordinate technicians, oversee field equipment installations, and serve as the on-site point of technical escalation.</p>
+          
+          <h3>Core Responsibilities</h3>
+          <ul>
+            <li>Supervise and dispatch on-the-ground technical teams across Central Texas job sites.</li>
+            <li>Conduct quality assurance audits and enforce technical safety standards during all installations.</li>
+            <li>Interface directly with clients and site administrators to verify completion milestones and resolve issues.</li>
+          </ul>
+
+          <h3>Required Qualifications</h3>
+          <ul>
+            <li>4+ years of supervisory experience in field technical operations, industrial services, or telecommunications.</li>
+            <li>Valid driver's license with clean driving history; ability to operate fleet commercial vehicles.</li>
+          </ul>
+        `
+      },
+      {
+        id: "lvo-dev-02",
+        title: "Full-Stack Software Engineer",
+        division: "Development & Systems",
+        divisionKey: "development",
+        location: "Remote",
+        workplace: "Remote",
+        jobType: "Full-time",
+        experience: "Mid Level",
+        salaryMin: 130000,
+        salaryMax: 160000,
+        salaryDisplay: "$130,000 - $160,000 a year",
+        postedDaysAgo: 5,
+        urgent: false,
+        summary: "Build responsive web applications, internal operational dashboards, and applicant evaluation portals across the LVO tech stack.",
+        overview: {
+          schedule: "100% Remote · US Timezones",
+          benefits: "Work-from-Home Stipend · Comprehensive Health · 401(k) Match · Learning Budget",
+          department: "Product Engineering & Software"
+        },
+        description: `
+          <h3>Role Overview</h3>
+          <p>We are seeking a talented Full-Stack Software Engineer to build features for the LVO workforce portal, applicant evaluation pipelines, and internal company portals.</p>
+          
+          <h3>Core Responsibilities</h3>
+          <ul>
+            <li>Write clean, modular TypeScript for web interfaces, API integrations, and edge backend handlers.</li>
+            <li>Implement accessible, high-performance user interfaces adhering strictly to LVO's design standards.</li>
+            <li>Optimize frontend payload sizes, database queries, and edge caching strategies.</li>
+          </ul>
+
+          <h3>Required Qualifications</h3>
+          <ul>
+            <li>4+ years of professional full-stack development experience with modern JavaScript/TypeScript frameworks.</li>
+            <li>Solid foundation in SQL/relational data models and REST/GraphQL interface design.</li>
+          </ul>
+        `
+      },
+      {
+        id: "lvo-fac-02",
+        title: "Logistics & Fleet Coordinator",
+        division: "Facilities & Logistics",
+        divisionKey: "facilities",
+        location: "Houston, TX",
+        workplace: "On-site",
+        jobType: "Full-time",
+        experience: "Entry-Mid Level",
+        salaryMin: 65000,
+        salaryMax: 82000,
+        salaryDisplay: "$65,000 - $82,000 a year",
+        postedDaysAgo: 2,
+        urgent: true,
+        summary: "Manage inventory intake, asset tagging, maintenance logs, and vehicle dispatch across LVO regional staging depots.",
+        overview: {
+          schedule: "Monday to Friday · 7:30 AM - 4:00 PM",
+          benefits: "Full Healthcare Coverage · Paid Holidays · 401(k) Retirement · Safety Gear",
+          department: "Supply Chain & Staging Logistics"
+        },
+        description: `
+          <h3>Role Overview</h3>
+          <p>Our Facilities team requires a detail-oriented Logistics & Fleet Coordinator to manage regional inventory, shipping manifests, and fleet dispatch schedules.</p>
+          
+          <h3>Core Responsibilities</h3>
+          <ul>
+            <li>Coordinate equipment inbound/outbound staging, verify manifests, and maintain computerized inventory.</li>
+            <li>Track vehicle inspections, registrations, fuel card reconciliations, and service scheduling.</li>
+          </ul>
+
+          <h3>Required Qualifications</h3>
+          <ul>
+            <li>2+ years in warehouse coordination, fleet dispatch, or inventory control.</li>
+            <li>Proficiency with inventory management systems and barcode auditing tools.</li>
+          </ul>
+        `
+      },
+      {
+        id: "lvo-prom-02",
+        title: "Public Engagements & Event Specialist",
+        division: "Promotions & Media",
+        divisionKey: "promotions",
+        location: "Dallas, TX",
+        workplace: "On-site",
+        jobType: "Full-time",
+        experience: "Entry-Mid Level",
+        salaryMin: 72000,
+        salaryMax: 90000,
+        salaryDisplay: "$72,000 - $90,000 a year",
+        postedDaysAgo: 6,
+        urgent: false,
+        summary: "Coordinate corporate showcase events, venue logistics, on-site personnel briefing, and attendee registration for public LVO engagements.",
+        overview: {
+          schedule: "Event-based schedule with travel within Texas",
+          benefits: "Travel Reimbursement · Full Health Insurance · 401(k) · Event Attire Allowance",
+          department: "Experiential Marketing & Public Events"
+        },
+        description: `
+          <h3>Role Overview</h3>
+          <p>Execute world-class corporate gatherings, partner receptions, and public engagements representing LVO Holdings across Texas markets.</p>
+          
+          <h3>Core Responsibilities</h3>
+          <ul>
+            <li>Organize catering, A/V production, registration desks, and VIP protocol for corporate showcases.</li>
+            <li>Serve as the on-site event coordinator addressing venue logistics and schedule compliance.</li>
+          </ul>
+
+          <h3>Required Qualifications</h3>
+          <ul>
+            <li>2+ years organizing professional corporate events, conventions, or hospitality activations.</li>
+          </ul>
+        `
+      },
+      {
+        id: "lvo-field-02",
+        title: "Electrical & Instrumentation Technician",
+        division: "Field Support",
+        divisionKey: "field",
+        location: "Houston, TX",
+        workplace: "On-site",
+        jobType: "Full-time",
+        experience: "Mid Level",
+        salaryMin: 78000,
+        salaryMax: 96000,
+        salaryDisplay: "$78,000 - $96,000 a year",
+        postedDaysAgo: 7,
+        urgent: false,
+        summary: "Install, calibrate, and troubleshoot control instrumentation, telemetry sensors, and electrical distribution systems at commercial job sites.",
+        overview: {
+          schedule: "Day shift with on-call rotation",
+          benefits: "Uniform & Tool Program · Medical/Dental · Certification Reimbursement · 401(k)",
+          department: "Industrial Instrumentation & Power"
+        },
+        description: `
+          <h3>Role Overview</h3>
+          <p>Support our field installations with hands-on electrical calibration, wiring termination, and diagnostic sensor testing across commercial infrastructure sites.</p>
+          
+          <h3>Core Responsibilities</h3>
+          <ul>
+            <li>Install and wire control panels, sensor loops, and power distribution hardware per electrical blueprints.</li>
+            <li>Perform diagnostic loop checks, signal calibration, and documentation of test results.</li>
+          </ul>
+
+          <h3>Required Qualifications</h3>
+          <ul>
+            <li>Journeyman electrician license or technical degree in Instrumentation / Industrial Electricity.</li>
+            <li>3+ years testing and commissioning electrical hardware in industrial/commercial environments.</li>
+          </ul>
+        `
+      }
+    ];
+
+    // State Management
+    let currentSelectedJobId = JOBS_DATA[0].id;
+    let savedJobIds = new Set(JSON.parse(localStorage.getItem('lvo_saved_jobs') || '[]'));
+    let activeFilters = {
+      queryWhat: '',
+      queryWhere: 'Houston, TX',
+      division: 'all',
+      workplace: 'all', // 'all', 'on-site', 'hybrid', 'remote'
+      minSalary: 0,
+      savedOnly: false
+    };
+    let currentSort = 'relevance';
+
+    // Workplace & Salary cycling presets
+    const WORKPLACE_CYCLES = [
+      { key: 'all', label: 'Workplace: Any' },
+      { key: 'Remote', label: 'Workplace: Remote' },
+      { key: 'Hybrid', label: 'Workplace: Hybrid' },
+      { key: 'On-site', label: 'Workplace: On-site' }
+    ];
+    let workplaceCycleIndex = 0;
+
+    const SALARY_CYCLES = [
+      { min: 0, label: 'Pay: Any' },
+      { min: 80000, label: 'Pay: $80k+' },
+      { min: 110000, label: 'Pay: $110k+' },
+      { min: 140000, label: 'Pay: $140k+' }
+    ];
+    let salaryCycleIndex = 0;
+
+    // Initialization
+    document.addEventListener('DOMContentLoaded', () => {
+      updateSavedCounter();
+      renderJobList();
+      renderJobDetail(currentSelectedJobId);
+      setupSearchInputs();
+      loadSavedAlertOnStartup();
+    });
+
+    function setupSearchInputs() {
+      const whatInput = document.getElementById('searchInputWhat');
+      const whereInput = document.getElementById('searchInputWhere');
+
+      whatInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') triggerSearch();
+      });
+      whereInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') triggerSearch();
+      });
+
+      whatInput.addEventListener('input', updateAlertSummaryContext);
+      whereInput.addEventListener('input', updateAlertSummaryContext);
+    }
+
+    function updateAlertSummaryContext() {
+      const summaryEl = document.getElementById('alertsSearchSummary');
+      if (!summaryEl) return;
+
+      const what = (document.getElementById('searchInputWhat')?.value || activeFilters.queryWhat || '').trim();
+      const where = (document.getElementById('searchInputWhere')?.value || activeFilters.queryWhere || '').trim();
+      
+      let divLabel = '';
+      if (activeFilters.division !== 'all') {
+        const divJob = JOBS_DATA.find(j => j.divisionKey === activeFilters.division);
+        divLabel = divJob ? ` · ${divJob.division}` : '';
+      }
+
+      const rolePart = what ? `"${what}"` : 'All Open Roles';
+      const locPart = where ? ` in ${where}` : ' (All Locations)';
+      summaryEl.textContent = `${rolePart}${locPart}${divLabel}`;
+    }
+
+    // Save Email Alert Preferences to localStorage
+    function handleSaveEmailAlert(e) {
+      e.preventDefault();
+      const emailInput = document.getElementById('alertEmailInput');
+      const email = emailInput.value.trim();
+      const frequency = document.getElementById('alertFrequencySelect').value;
+
+      if (!email || !email.includes('@')) {
+        showToast('Please enter a valid email address');
+        return;
+      }
+
+      const what = (document.getElementById('searchInputWhat')?.value || activeFilters.queryWhat || '').trim();
+      const where = (document.getElementById('searchInputWhere')?.value || activeFilters.queryWhere || '').trim();
+
+      const alertPref = {
+        email: email,
+        queryWhat: what,
+        queryWhere: where,
+        division: activeFilters.division,
+        workplace: activeFilters.workplace,
+        minSalary: activeFilters.minSalary,
+        frequency: frequency,
+        savedAt: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+      };
+
+      try {
+        localStorage.setItem('lvo_job_alerts_prefs', JSON.stringify(alertPref));
+        renderSavedAlertRibbon();
+        showToast(`Job alert activated for ${email}! Preferences saved.`);
+      } catch (err) {
+        console.error('Failed to save to localStorage', err);
+        showToast('Alert preferences saved for this session.');
+      }
+    }
+
+    // Render Saved Alert Ribbon from localStorage
+    function renderSavedAlertRibbon() {
+      const ribbon = document.getElementById('savedAlertRibbon');
+      if (!ribbon) return;
+
+      const raw = localStorage.getItem('lvo_job_alerts_prefs');
+      if (!raw) {
+        ribbon.classList.remove('active');
+        return;
+      }
+
+      try {
+        const pref = JSON.parse(raw);
+        ribbon.classList.add('active');
+
+        const roleText = pref.queryWhat ? `"${pref.queryWhat}"` : 'All Roles';
+        const locText = pref.queryWhere ? ` in ${pref.queryWhere}` : '';
+        const freqText = pref.frequency === 'daily' ? 'Daily' : 'Weekly';
+
+        document.getElementById('savedAlertCriteriaBadge').textContent = `${roleText}${locText} (${freqText})`;
+        document.getElementById('savedAlertEmailDisplay').textContent = `· Sent to: ${pref.email}`;
+
+        // Also prefill input with existing email if empty
+        const emailInput = document.getElementById('alertEmailInput');
+        if (emailInput && !emailInput.value) {
+          emailInput.value = pref.email;
+        }
+      } catch (e) {
+        ribbon.classList.remove('active');
+      }
+    }
+
+    // Apply Saved Search Alert Preferences to Filter Job List
+    function applySavedAlertPreferences() {
+      const raw = localStorage.getItem('lvo_job_alerts_prefs');
+      if (!raw) return;
+
+      try {
+        const pref = JSON.parse(raw);
+
+        // Restore Search Inputs
+        if (document.getElementById('searchInputWhat')) {
+          document.getElementById('searchInputWhat').value = pref.queryWhat || '';
+        }
+        if (document.getElementById('searchInputWhere')) {
+          document.getElementById('searchInputWhere').value = pref.queryWhere || '';
+        }
+
+        activeFilters.queryWhat = pref.queryWhat || '';
+        activeFilters.queryWhere = pref.queryWhere || '';
+
+        // Restore Division
+        if (pref.division) {
+          setDivisionFilter(pref.division);
+        }
+
+        // Restore Workplace
+        if (pref.workplace && pref.workplace !== 'all') {
+          activeFilters.workplace = pref.workplace;
+          const foundIdx = WORKPLACE_CYCLES.findIndex(w => w.key.toLowerCase() === pref.workplace.toLowerCase());
+          if (foundIdx !== -1) {
+            workplaceCycleIndex = foundIdx;
+            document.getElementById('workplaceFilterLabel').textContent = WORKPLACE_CYCLES[foundIdx].label;
+            document.getElementById('filterWorkplaceBtn').classList.add('active');
+          }
+        }
+
+        // Restore Salary
+        if (pref.minSalary && pref.minSalary > 0) {
+          activeFilters.minSalary = pref.minSalary;
+          const foundSalIdx = SALARY_CYCLES.findIndex(s => s.min === pref.minSalary);
+          if (foundSalIdx !== -1) {
+            salaryCycleIndex = foundSalIdx;
+            document.getElementById('salaryFilterLabel').textContent = SALARY_CYCLES[foundSalIdx].label;
+            document.getElementById('filterSalaryBtn').classList.add('active');
+          }
+        }
+
+        renderJobList();
+        updateAlertSummaryContext();
+        showToast('Applied saved job alert search preferences!');
+      } catch (err) {
+        console.error('Failed to parse saved alert preferences', err);
+      }
+    }
+
+    // Delete Saved Alert
+    function deleteSavedAlert() {
+      localStorage.removeItem('lvo_job_alerts_prefs');
+      const ribbon = document.getElementById('savedAlertRibbon');
+      if (ribbon) ribbon.classList.remove('active');
+      showToast('Saved email job alert removed.');
+    }
+
+    function loadSavedAlertOnStartup() {
+      renderSavedAlertRibbon();
+      updateAlertSummaryContext();
+    }
+
+    function triggerSearch() {
+      activeFilters.queryWhat = document.getElementById('searchInputWhat').value.trim();
+      activeFilters.queryWhere = document.getElementById('searchInputWhere').value.trim();
+      activeFilters.savedOnly = false;
+      renderJobList();
+      updateAlertSummaryContext();
+    }
+
+    function applySearchQuery(what, where) {
+      document.getElementById('searchInputWhat').value = what;
+      if (where) document.getElementById('searchInputWhere').value = where;
+      triggerSearch();
+      updateAlertSummaryContext();
+      window.scrollTo({ top: document.querySelector('.search-hero').offsetTop, behavior: 'smooth' });
+    }
+
+    function setDivisionFilter(divKey) {
+      activeFilters.division = divKey;
+      activeFilters.savedOnly = false;
+      
+      document.querySelectorAll('#divisionFilterButtons .filter-btn').forEach(btn => {
+        if (btn.getAttribute('data-val') === divKey) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+
+      renderJobList();
+      updateAlertSummaryContext();
+    }
+
+    function filterByDivision(divKey) {
+      setDivisionFilter(divKey);
+      document.querySelector('.filters-bar-section').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function cycleWorkplaceFilter() {
+      workplaceCycleIndex = (workplaceCycleIndex + 1) % WORKPLACE_CYCLES.length;
+      const current = WORKPLACE_CYCLES[workplaceCycleIndex];
+      activeFilters.workplace = current.key;
+      document.getElementById('workplaceFilterLabel').textContent = current.label;
+      const btn = document.getElementById('filterWorkplaceBtn');
+      if (current.key === 'all') {
+        btn.classList.remove('active');
+      } else {
+        btn.classList.add('active');
+      }
+      renderJobList();
+    }
+
+    function cycleSalaryFilter() {
+      salaryCycleIndex = (salaryCycleIndex + 1) % SALARY_CYCLES.length;
+      const current = SALARY_CYCLES[salaryCycleIndex];
+      activeFilters.minSalary = current.min;
+      document.getElementById('salaryFilterLabel').textContent = current.label;
+      const btn = document.getElementById('filterSalaryBtn');
+      if (current.min === 0) {
+        btn.classList.remove('active');
+      } else {
+        btn.classList.add('active');
+      }
+      renderJobList();
+    }
+
+    function resetAllFilters() {
+      activeFilters = {
+        queryWhat: '',
+        queryWhere: '',
+        division: 'all',
+        workplace: 'all',
+        minSalary: 0,
+        savedOnly: false
+      };
+      document.getElementById('searchInputWhat').value = '';
+      document.getElementById('searchInputWhere').value = '';
+      workplaceCycleIndex = 0;
+      salaryCycleIndex = 0;
+      document.getElementById('workplaceFilterLabel').textContent = WORKPLACE_CYCLES[0].label;
+      document.getElementById('salaryFilterLabel').textContent = SALARY_CYCLES[0].label;
+      document.getElementById('filterWorkplaceBtn').classList.remove('active');
+      document.getElementById('filterSalaryBtn').classList.remove('active');
+      document.querySelectorAll('#divisionFilterButtons .filter-btn').forEach(b => {
+        b.classList.toggle('active', b.getAttribute('data-val') === 'all');
+      });
+      renderJobList();
+    }
+
+    function toggleSavedFilter() {
+      activeFilters.savedOnly = !activeFilters.savedOnly;
+      const btn = document.getElementById('headerSavedBtn');
+      btn.style.borderColor = activeFilters.savedOnly ? 'var(--gold)' : 'var(--border-subtle)';
+      btn.style.backgroundColor = activeFilters.savedOnly ? 'var(--gold-surface)' : 'transparent';
+      renderJobList();
+    }
+
+    function handleSortChange() {
+      currentSort = document.getElementById('sortSelect').value;
+      renderJobList();
+    }
+
+    // Filter & Sort Logic
+    function getFilteredJobs() {
+      let filtered = JOBS_DATA.filter(job => {
+        // Saved filter
+        if (activeFilters.savedOnly && !savedJobIds.has(job.id)) return false;
+
+        // Division filter
+        if (activeFilters.division !== 'all' && job.divisionKey !== activeFilters.division) return false;
+
+        // Workplace filter
+        if (activeFilters.workplace !== 'all') {
+          if (job.workplace.toLowerCase() !== activeFilters.workplace.toLowerCase()) return false;
+        }
+
+        // Min Salary filter
+        if (activeFilters.minSalary > 0 && job.salaryMax < activeFilters.minSalary) return false;
+
+        // "What" query search
+        if (activeFilters.queryWhat) {
+          const q = activeFilters.queryWhat.toLowerCase();
+          const matchTitle = job.title.toLowerCase().includes(q);
+          const matchDiv = job.division.toLowerCase().includes(q);
+          const matchSummary = job.summary.toLowerCase().includes(q);
+          if (!matchTitle && !matchDiv && !matchSummary) return false;
+        }
+
+        // "Where" query search
+        if (activeFilters.queryWhere) {
+          const w = activeFilters.queryWhere.toLowerCase();
+          const matchLoc = job.location.toLowerCase().includes(w);
+          const matchWork = job.workplace.toLowerCase().includes(w);
+          if (!matchLoc && !matchWork) return false;
+        }
+
+        return true;
+      });
+
+      // Sorting
+      if (currentSort === 'date') {
+        filtered.sort((a, b) => a.postedDaysAgo - b.postedDaysAgo);
+      } else if (currentSort === 'salary') {
+        filtered.sort((a, b) => b.salaryMax - a.salaryMax);
+      }
+
+      return filtered;
+    }
+
+    // Render Master Feed
+    function renderJobList() {
+      const feedContainer = document.getElementById('jobsFeed');
+      const filtered = getFilteredJobs();
+
+      // Update count text
+      const countEl = document.getElementById('resultsCountText');
+      if (activeFilters.savedOnly) {
+        countEl.innerHTML = `Showing <strong>${filtered.length}</strong> saved positions`;
+      } else {
+        countEl.innerHTML = `Showing <strong>${filtered.length}</strong> open roles at LVO Holdings`;
+      }
+
+      if (filtered.length === 0) {
+        feedContainer.innerHTML = `
+          <div style="background: var(--surface); border: 1px solid var(--border-subtle); border-radius: 8px; padding: 3rem 2rem; text-align: center;">
+            <p style="font-family: var(--font-brand); font-size: 1.2rem; font-weight: 700; color: var(--ink); margin-bottom: 0.5rem;">No matching opportunities found</p>
+            <p style="color: var(--ink-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">Try relaxing your search terms or view all open positions across LVO Holdings.</p>
+            <button type="button" class="btn-signin" style="margin: 0 auto;" onclick="resetAllFilters()">Reset All Filters</button>
+          </div>
+        `;
+        document.getElementById('jobDetailPane').innerHTML = `
+          <div style="text-align: center; padding: 4rem 1rem; color: var(--ink-muted);">
+            <p>Select a job from the list to preview details and start your application on job.wearelvo.com.</p>
+          </div>
+        `;
+        return;
+      }
+
+      // Check if current selected job is still in filtered results
+      if (!filtered.some(j => j.id === currentSelectedJobId)) {
+        currentSelectedJobId = filtered[0].id;
+      }
+
+      feedContainer.innerHTML = filtered.map(job => {
+        const isSelected = job.id === currentSelectedJobId;
+        const isSaved = savedJobIds.has(job.id);
+        const postedText = job.postedDaysAgo === 1 ? '1 day ago' : `${job.postedDaysAgo} days ago`;
+
+        return `
+          <article class="job-card ${isSelected ? 'selected' : ''}" onclick="selectJob('${job.id}')" data-job-id="${job.id}">
+            <div class="job-card-header">
+              <h2 class="job-card-title">${escapeHtml(job.title)}</h2>
+              <button type="button" class="job-save-btn ${isSaved ? 'saved' : ''}" onclick="toggleSaveJob(event, '${job.id}')" title="${isSaved ? 'Remove from saved' : 'Save job'}" aria-label="Save ${escapeHtml(job.title)}">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="${isSaved ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2">
+                  <path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/>
+                </svg>
+              </button>
+            </div>
+
+            <div class="job-card-division">${escapeHtml(job.division)}</div>
+            <div class="job-card-location">${escapeHtml(job.location)} (${escapeHtml(job.workplace)})</div>
+
+            <!-- Zero-Pill unboxed metadata -->
+            <div class="job-card-meta">
+              <span class="job-card-salary tabular-nums">${escapeHtml(job.salaryDisplay)}</span>
+              <span class="meta-separator" aria-hidden="true">·</span>
+              <span>${escapeHtml(job.jobType)}</span>
+              <span class="meta-separator" aria-hidden="true">·</span>
+              <span>${escapeHtml(job.experience)}</span>
+            </div>
+
+            <p class="job-card-snippet">${escapeHtml(job.summary)}</p>
+
+            <div class="job-card-footer">
+              <span>Posted ${postedText}</span>
+              <span class="apply-channel-hint">
+                <span>Apply on job.wearelvo.com</span>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              </span>
+            </div>
+          </article>
+        `;
+      }).join('');
+
+      renderJobDetail(currentSelectedJobId);
+    }
+
+    // Select Job & Mobile Responsive Switch
+    function selectJob(jobId) {
+      currentSelectedJobId = jobId;
+
+      // Update card selection state
+      document.querySelectorAll('.job-card').forEach(card => {
+        if (card.getAttribute('data-job-id') === jobId) {
+          card.classList.add('selected');
+        } else {
+          card.classList.remove('selected');
+        }
+      });
+
+      renderJobDetail(jobId);
+
+      // On mobile viewports (<960px), hide list and show detail
+      if (window.innerWidth < 960) {
+        document.getElementById('jobsFeed').classList.add('mobile-hidden');
+        document.getElementById('jobDetailPane').classList.remove('mobile-hidden');
+        document.getElementById('mobileBackRow').classList.add('active');
+        window.scrollTo({ top: document.getElementById('mobileBackRow').offsetTop - 80, behavior: 'smooth' });
+      }
+    }
+
+    function closeMobileDetail() {
+      document.getElementById('jobsFeed').classList.remove('mobile-hidden');
+      document.getElementById('jobDetailPane').classList.add('mobile-hidden');
+      document.getElementById('mobileBackRow').classList.remove('active');
+    }
+
+    // Render Right Detailed Pane
+    function renderJobDetail(jobId) {
+      const detailPane = document.getElementById('jobDetailPane');
+      const job = JOBS_DATA.find(j => j.id === jobId);
+
+      if (!job) {
+        detailPane.innerHTML = `<p style="padding: 2rem; color: var(--ink-muted);">Select a job to view details.</p>`;
+        return;
+      }
+
+      const isSaved = savedJobIds.has(job.id);
+      const postedText = job.postedDaysAgo === 1 ? '1 day ago' : `${job.postedDaysAgo} days ago`;
+
+      // Direct subdomain action URL passing job ID
+      const directApplyUrl = `https://job.wearelvo.com/apply?job=${encodeURIComponent(job.id)}&title=${encodeURIComponent(job.title)}`;
+
+      detailPane.innerHTML = `
+        <!-- Visual Recruitment Stages Progress Indicator -->
+        <div class="recruitment-stages-container">
+          <div class="stages-top-row">
+            <span class="stages-kicker">Standard Recruitment Pathway</span>
+            <span class="stages-meta">Est. timeline: 2–3 weeks</span>
+          </div>
+          <div class="stepper-track">
+            <div class="stepper-step active" onclick="selectRecruitmentStage(0)" title="Stage 1: Application">
+              <div class="step-node">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+              <span class="step-name">Application</span>
+              <span class="step-detail">job.wearelvo.com</span>
+            </div>
+            <div class="stepper-line"></div>
+            <div class="stepper-step" onclick="selectRecruitmentStage(1)" title="Stage 2: Screening">
+              <div class="step-node">2</div>
+              <span class="step-name">Screening</span>
+              <span class="step-detail">Division Review</span>
+            </div>
+            <div class="stepper-line"></div>
+            <div class="stepper-step" onclick="selectRecruitmentStage(2)" title="Stage 3: Interview">
+              <div class="step-node">3</div>
+              <span class="step-name">Interview</span>
+              <span class="step-detail">Panel &amp; Skills</span>
+            </div>
+            <div class="stepper-line"></div>
+            <div class="stepper-step" onclick="selectRecruitmentStage(3)" title="Stage 4: Offer">
+              <div class="step-node">4</div>
+              <span class="step-name">Offer</span>
+              <span class="step-detail">Terms &amp; Start</span>
+            </div>
+          </div>
+          <div class="stage-callout-bubble" id="stageCalloutBubble">
+            <strong>Stage 1 · Application:</strong> Submit your candidate profile directly through <em>job.wearelvo.com</em>. Applications are acknowledged and routed to division hiring directors within 24 hours.
+          </div>
+        </div>
+
+        <div class="detail-sticky-header">
+          <h1 class="detail-title">${escapeHtml(job.title)}</h1>
+          <div class="detail-company-line">
+            <a href="https://wearelvo.com" target="_blank" rel="noopener noreferrer">LVO Holdings</a>
+            <span>· ${escapeHtml(job.division)}</span>
+          </div>
+          <div class="detail-location-line">
+            <span>${escapeHtml(job.location)} (${escapeHtml(job.workplace)})</span>
+            <span aria-hidden="true"> · </span>
+            <span class="tabular-nums font-semibold text-slate-800">${escapeHtml(job.salaryDisplay)}</span>
+            <span aria-hidden="true"> · </span>
+            <span>Posted ${postedText}</span>
+          </div>
+
+          <div class="detail-actions-bar">
+            <!-- Primary Action: Leads to job.wearelvo.com -->
+            <a href="${directApplyUrl}" class="btn-apply-primary" onclick="handleDirectApply(event, '${job.id}', '${escapeHtml(job.title)}')">
+              <span>Apply on job.wearelvo.com</span>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="7" y1="17" x2="17" y2="7"/>
+                <polyline points="7 7 17 7 17 17"/>
+              </svg>
+            </a>
+
+            <!-- Save Job Button -->
+            <button type="button" class="btn-save-secondary" onclick="toggleSaveJob(event, '${job.id}')">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="${isSaved ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2">
+                <path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/>
+              </svg>
+              <span>${isSaved ? 'Saved' : 'Save Job'}</span>
+            </button>
+
+            <!-- Share Button -->
+            <button type="button" class="btn-share" onclick="shareJob('${escapeHtml(job.title)}', '${job.id}')" title="Share Job">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/>
+                <polyline points="16 6 12 2 8 6"/>
+                <line x1="12" y1="2" x2="12" y2="15"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Job Overview Highlights Matrix -->
+        <div class="detail-overview-section">
+          <div class="overview-heading">Job Details</div>
+          <div class="overview-grid">
+            <div>
+              <div class="overview-item-label">Pay Range</div>
+              <div class="overview-item-val tabular-nums">${escapeHtml(job.salaryDisplay)}</div>
+            </div>
+            <div>
+              <div class="overview-item-label">Job Type</div>
+              <div class="overview-item-val">${escapeHtml(job.jobType)}</div>
+            </div>
+            <div>
+              <div class="overview-item-label">Workplace</div>
+              <div class="overview-item-val">${escapeHtml(job.workplace)}</div>
+            </div>
+            <div>
+              <div class="overview-item-label">Experience Level</div>
+              <div class="overview-item-val">${escapeHtml(job.experience)}</div>
+            </div>
+            <div>
+              <div class="overview-item-label">Schedule</div>
+              <div class="overview-item-val">${escapeHtml(job.overview.schedule)}</div>
+            </div>
+            <div>
+              <div class="overview-item-label">Benefits</div>
+              <div class="overview-item-val">${escapeHtml(job.overview.benefits)}</div>
+            </div>
+          </div>
+
+          <!-- Salary Benchmark & Recharts Bar Chart Section -->
+          <div class="salary-benchmark-section">
+            <div class="benchmark-header">
+              <div>
+                <h3 class="benchmark-title">Salary Benchmark &amp; Division Comparison</h3>
+                <p class="benchmark-sub">Comparing this role's compensation bracket against the <strong>${escapeHtml(job.division)}</strong> division baseline.</p>
+              </div>
+              <div class="benchmark-badge" id="salaryDeltaBadge">Calculating benchmark...</div>
+            </div>
+
+            <!-- Recharts Bar Chart Container -->
+            <div id="salaryChartRoot" class="salary-chart-container"></div>
+
+            <div class="benchmark-footer-stats">
+              <div class="benchmark-stat-item">
+                <span class="stat-indicator" style="background-color: #C8B289;"></span>
+                <span class="stat-name">Role Minimum:</span>
+                <strong class="tabular-nums font-semibold">$${(job.salaryMin).toLocaleString()}</strong>
+              </div>
+              <div class="benchmark-stat-item">
+                <span class="stat-indicator" style="background-color: #9C7A3C;"></span>
+                <span class="stat-name">Role Maximum:</span>
+                <strong class="tabular-nums font-semibold">$${(job.salaryMax).toLocaleString()}</strong>
+              </div>
+              <div class="benchmark-stat-item">
+                <span class="stat-indicator" style="background-color: #242320;"></span>
+                <span class="stat-name">${escapeHtml(job.division)} Average:</span>
+                <strong class="tabular-nums font-semibold" id="chartDivisionAvgValue">...</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Full Job Description -->
+        <div class="job-description-content">
+          ${job.description}
+
+          <!-- Subdomain Gateway Callout -->
+          <div class="subdomain-application-callout">
+            <h4 class="callout-title">Application Processing on job.wearelvo.com</h4>
+            <p class="callout-text">
+              To submit your resume, complete background disclosures, and track your interview rounds in real time, you will be redirected to the central LVO Workforce portal at <strong>job.wearelvo.com</strong>.
+            </p>
+            <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+              <a href="${directApplyUrl}" class="btn-signin" style="text-decoration: none;" onclick="handleDirectApply(event, '${job.id}', '${escapeHtml(job.title)}')">
+                <span>Continue to job.wearelvo.com</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              </a>
+              <button type="button" class="btn-saved-badge" onclick="openLoginModal('Application Callout')">
+                Sign in with existing credentials
+              </button>
+            </div>
+            <p style="font-size: 0.78rem; color: var(--ink-muted); margin-top: 0.85rem;">
+              By applying, you agree to our 
+              <a href="https://tos.wearelvo.com/" target="_blank" rel="noopener noreferrer" style="color: var(--ink); text-decoration: underline;">Terms of Service</a> 
+              and acknowledge our 
+              <a href="https://privacy.wearelvo.com/" target="_blank" rel="noopener noreferrer" style="color: var(--ink); text-decoration: underline;">Privacy Policy</a>.
+            </p>
+          </div>
+        </div>
+      `;
+
+      // Render Recharts Salary Comparison Bar Chart
+      renderSalaryChart(job);
+    }
+
+    // Recruitment Stages Interaction
+    const RECRUITMENT_STAGES = [
+      {
+        name: "Application",
+        meta: "job.wearelvo.com",
+        desc: "Submit your candidate profile directly through <strong>job.wearelvo.com</strong>. Applications are routed to division hiring directors within 24 hours."
+      },
+      {
+        name: "Screening",
+        meta: "Division Review",
+        desc: "A 30-minute introductory alignment conversation with our division talent specialist covering your background, culture, and core qualifications."
+      },
+      {
+        name: "Interview",
+        meta: "Panel & Skills",
+        desc: "In-depth technical or operational panel interview with division managers and potential peers to evaluate hands-on execution and problem-solving."
+      },
+      {
+        name: "Offer",
+        meta: "Terms & Start",
+        desc: "Formal offer package discussion including compensation, benefits enrollment, equipment logistics, and confirmed start date."
+      }
+    ];
+
+    function selectRecruitmentStage(index) {
+      const steps = document.querySelectorAll('.stepper-step');
+      const lines = document.querySelectorAll('.stepper-line');
+      steps.forEach((s, idx) => {
+        s.classList.remove('active', 'completed');
+        if (idx < index) {
+          s.classList.add('completed');
+        } else if (idx === index) {
+          s.classList.add('active');
+        }
+      });
+
+      lines.forEach((l, idx) => {
+        l.classList.toggle('active', idx < index);
+      });
+
+      const stage = RECRUITMENT_STAGES[index];
+      const bubble = document.getElementById('stageCalloutBubble');
+      if (bubble && stage) {
+        bubble.innerHTML = `<strong>Stage ${index + 1} · ${stage.name}:</strong> ${stage.desc}`;
+      }
+    }
+
+    // Recharts Salary Comparison Chart Logic
+    let chartRootInstance = null;
+
+    function renderSalaryChart(job) {
+      const container = document.getElementById('salaryChartRoot');
+      if (!container) return;
+
+      const divJobs = JOBS_DATA.filter(j => j.divisionKey === job.divisionKey);
+      const sumMid = divJobs.reduce((acc, j) => acc + (j.salaryMin + j.salaryMax) / 2, 0);
+      const divisionAvg = Math.round(sumMid / divJobs.length);
+
+      const jobMid = (job.salaryMin + job.salaryMax) / 2;
+      const deltaPct = Math.round(((jobMid - divisionAvg) / divisionAvg) * 100);
+      const deltaSign = deltaPct >= 0 ? '+' : '';
+      const deltaText = `${deltaSign}${deltaPct}% vs division average`;
+
+      const deltaEl = document.getElementById('salaryDeltaBadge');
+      if (deltaEl) {
+        deltaEl.textContent = deltaText;
+        deltaEl.style.color = deltaPct >= 0 ? '#15803D' : '#B45309';
+        deltaEl.style.backgroundColor = deltaPct >= 0 ? '#F0FDF4' : '#FEF3C7';
+        deltaEl.style.borderColor = deltaPct >= 0 ? '#BBF7D0' : '#FDE68A';
+      }
+
+      const roleAvgEl = document.getElementById('chartDivisionAvgValue');
+      if (roleAvgEl) {
+        roleAvgEl.textContent = `$${divisionAvg.toLocaleString()}`;
+      }
+
+      if (window.React && window.ReactDOM && window.Recharts) {
+        try {
+          const data = [
+            {
+              name: 'Role Min',
+              salary: job.salaryMin,
+              display: `$${(job.salaryMin / 1000).toFixed(0)}k`,
+              fill: '#C8B289'
+            },
+            {
+              name: 'Role Max',
+              salary: job.salaryMax,
+              display: `$${(job.salaryMax / 1000).toFixed(0)}k`,
+              fill: '#9C7A3C'
+            },
+            {
+              name: 'Division Avg',
+              salary: divisionAvg,
+              display: `$${(divisionAvg / 1000).toFixed(0)}k`,
+              fill: '#242320'
+            }
+          ];
+
+          const R = window.React;
+          const RC = window.Recharts;
+
+          const chartElement = R.createElement(
+            RC.ResponsiveContainer,
+            { width: '100%', height: 210 },
+            R.createElement(
+              RC.BarChart,
+              {
+                data: data,
+                margin: { top: 24, right: 15, left: 10, bottom: 5 },
+                barSize: 46
+              },
+              R.createElement(RC.CartesianGrid, { strokeDasharray: '3 3', vertical: false, stroke: '#EBE8DF' }),
+              R.createElement(RC.XAxis, {
+                dataKey: 'name',
+                axisLine: { stroke: '#D6D2C4' },
+                tickLine: false,
+                tick: { fill: '#48453E', fontSize: 12, fontWeight: 500, fontFamily: "'Plus Jakarta Sans', sans-serif" }
+              }),
+              R.createElement(RC.YAxis, {
+                axisLine: false,
+                tickLine: false,
+                tickFormatter: (val) => `$${val / 1000}k`,
+                domain: [0, (max) => Math.ceil((max * 1.18) / 10000) * 10000],
+                tick: { fill: '#747167', fontSize: 11, fontFamily: "'JetBrains Mono', monospace" },
+                width: 52
+              }),
+              R.createElement(RC.Tooltip, {
+                cursor: { fill: 'rgba(156, 122, 60, 0.05)' },
+                formatter: (val) => [`$${Number(val).toLocaleString()} / year`, 'Compensation'],
+                contentStyle: {
+                  backgroundColor: '#FFFFFF',
+                  border: '1px solid #E2DFD6',
+                  borderRadius: '6px',
+                  boxShadow: '0 4px 16px rgba(0,0,0,0.08)',
+                  fontSize: '12px',
+                  fontFamily: "'Plus Jakarta Sans', sans-serif",
+                  color: '#171614',
+                  padding: '8px 12px'
+                }
+              }),
+              R.createElement(
+                RC.Bar,
+                {
+                  dataKey: 'salary',
+                  radius: [4, 4, 0, 0],
+                  label: {
+                    position: 'top',
+                    formatter: (val) => `$${(val / 1000).toFixed(0)}k`,
+                    fill: '#48453E',
+                    fontSize: 11,
+                    fontFamily: "'JetBrains Mono', monospace",
+                    fontWeight: 600
+                  }
+                },
+                data.map((entry, index) =>
+                  R.createElement(RC.Cell, { key: `cell-${index}`, fill: entry.fill })
+                )
+              )
+            )
+          );
+
+          if (!chartRootInstance || chartRootInstance._container !== container) {
+            if (window.ReactDOM.createRoot) {
+              chartRootInstance = window.ReactDOM.createRoot(container);
+              chartRootInstance.render(chartElement);
+            } else {
+              window.ReactDOM.render(chartElement, container);
+            }
+          } else {
+            chartRootInstance.render(chartElement);
+          }
+          return;
+        } catch (err) {
+          console.warn('Recharts render issue, using fallback SVG chart', err);
+        }
+      }
+
+      // Pure SVG fallback if scripts are loading
+      renderSvgSalaryChart(container, job, divisionAvg);
+    }
+
+    function renderSvgSalaryChart(container, job, divisionAvg) {
+      const maxVal = Math.max(job.salaryMax, divisionAvg) * 1.15;
+      const hMin = Math.round((job.salaryMin / maxVal) * 130);
+      const hMax = Math.round((job.salaryMax / maxVal) * 130);
+      const hAvg = Math.round((divisionAvg / maxVal) * 130);
+
+      container.innerHTML = `
+        <div style="display: flex; align-items: flex-end; justify-content: space-around; height: 180px; padding: 10px 20px 0; border-bottom: 1px solid #D6D2C4;">
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 6px;">
+            <span style="font-family: var(--font-mono); font-size: 11px; font-weight: 600; color: #48453E;">$${(job.salaryMin/1000).toFixed(0)}k</span>
+            <div style="width: 48px; height: ${hMin}px; background-color: #C8B289; border-radius: 4px 4px 0 0;"></div>
+            <span style="font-size: 12px; color: #48453E; margin-top: 4px;">Role Min</span>
+          </div>
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 6px;">
+            <span style="font-family: var(--font-mono); font-size: 11px; font-weight: 600; color: #48453E;">$${(job.salaryMax/1000).toFixed(0)}k</span>
+            <div style="width: 48px; height: ${hMax}px; background-color: #9C7A3C; border-radius: 4px 4px 0 0;"></div>
+            <span style="font-size: 12px; color: #48453E; margin-top: 4px;">Role Max</span>
+          </div>
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 6px;">
+            <span style="font-family: var(--font-mono); font-size: 11px; font-weight: 600; color: #48453E;">$${(divisionAvg/1000).toFixed(0)}k</span>
+            <div style="width: 48px; height: ${hAvg}px; background-color: #242320; border-radius: 4px 4px 0 0;"></div>
+            <span style="font-size: 12px; color: #48453E; margin-top: 4px;">Division Avg</span>
+          </div>
+        </div>
+      `;
+    }
+
+    // Save / Bookmark Job Logic
+    function toggleSaveJob(e, jobId) {
+      if (e) e.stopPropagation();
+      if (savedJobIds.has(jobId)) {
+        savedJobIds.delete(jobId);
+        showToast('Job removed from saved list');
+      } else {
+        savedJobIds.add(jobId);
+        showToast('Job saved to your list');
+      }
+      localStorage.setItem('lvo_saved_jobs', JSON.stringify(Array.from(savedJobIds)));
+      updateSavedCounter();
+      renderJobList();
+    }
+
+    function updateSavedCounter() {
+      document.getElementById('savedCounter').textContent = savedJobIds.size;
+    }
+
+    // Share Job Link
+    function shareJob(title, jobId) {
+      const shareUrl = `${window.location.origin}/#job=${encodeURIComponent(jobId)}`;
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(shareUrl).then(() => {
+          showToast('Job link copied to clipboard');
+        }).catch(() => {
+          showToast('Direct link: ' + shareUrl);
+        });
+      } else {
+        showToast('Direct link: ' + shareUrl);
+      }
+    }
+
+    // Direct Apply click handler: gives applicant choice to login or proceed
+    function handleDirectApply(e, jobId, jobTitle) {
+      e.preventDefault();
+      // Prompt modal with prefilled destination
+      openLoginModal(`Application for ${jobTitle}`, jobId);
+    }
+
+    // Modal Control & Subdomain Redirection
+    let pendingJobRedirectId = null;
+
+    function openLoginModal(sourceContext, jobId = null) {
+      pendingJobRedirectId = jobId;
+      const modal = document.getElementById('loginModal');
+      modal.classList.add('open');
+
+      const titleEl = document.getElementById('modalTitle');
+      if (jobId) {
+        const job = JOBS_DATA.find(j => j.id === jobId);
+        titleEl.textContent = `Apply for ${job ? job.title : 'Position'}`;
+      } else {
+        titleEl.textContent = 'Sign In to job.wearelvo.com';
+      }
+
+      document.getElementById('loginIdentifier').focus();
+    }
+
+    function closeLoginModal() {
+      document.getElementById('loginModal').classList.remove('open');
+      pendingJobRedirectId = null;
+    }
+
+    // Modal Backdrop click to close
+    document.getElementById('loginModal').addEventListener('click', (e) => {
+      if (e.target.id === 'loginModal') {
+        closeLoginModal();
+      }
+    });
+
+    // Handle Authentication & Redirect to job.wearelvo.com
+    async function handleModalLogin(e) {
+      e.preventDefault();
+      const identifier = document.getElementById('loginIdentifier').value.trim();
+      const password = document.getElementById('loginPassword').value;
+      const submitBtn = document.getElementById('modalSubmitBtn');
+
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `
+        <svg class="animate-spin" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10" stroke-opacity="0.25"/>
+          <path d="M12 2a10 10 0 0 1 10 10" stroke-opacity="0.8"/>
+        </svg>
+        <span>Redirecting to job.wearelvo.com...</span>
+      `;
+
+      // Use LVOAuth client if available or build direct session token handoff
+      let lvoToken = '';
+      try {
+        if (typeof LVOAuth !== 'undefined' && LVOAuth.login) {
+          const authRes = await LVOAuth.login({
+            identifier,
+            password,
+            division: 'Careers'
+          });
+          if (authRes && authRes.token) {
+            lvoToken = authRes.token;
+            LVOAuth.setToken(lvoToken);
+          }
+        }
+      } catch (err) {
+        console.warn('LVOAuth worker check skipped, proceeding with direct subdomain session transfer', err);
+      }
+
+      // Route to the Workforce HR & Payroll Dashboard on job.wearelvo.com
+      const redirectParams = new URLSearchParams();
+
+      if (pendingJobRedirectId) {
+        redirectParams.set('job', pendingJobRedirectId);
+        redirectParams.set('action', 'apply');
+      }
+      if (identifier) {
+        redirectParams.set('user', encodeURIComponent(identifier));
+      }
+      if (lvoToken) {
+        redirectParams.set('lvo_token', lvoToken);
+      }
+      redirectParams.set('from', 'careers.wearelvo.com');
+
+      const destination = `/dashboard?${redirectParams.toString()}`;
+
+      showToast('Redirecting to job.wearelvo.com Workforce Dashboard...');
+      
+      setTimeout(() => {
+        window.location.href = destination;
+      }, 600);
+    }
+
+    function handleForgotPassword() {
+      alert('Password resets are managed by LVO Central Administration. Please contact accountrecovery@wearelvo.com with your employee or applicant ID.');
+    }
+
+    function showEEOModal() {
+      alert('LVO Holdings is an equal opportunity employer. We do not discriminate on the basis of race, color, religion, sex, national origin, age, disability, genetic information, veteran status, sexual orientation, gender identity, or any other protected status.');
+    }
+
+    function openSalaryOverview() {
+      activeFilters.minSalary = 100000;
+      salaryCycleIndex = 2;
+      document.getElementById('salaryFilterLabel').textContent = 'Pay: $110k+';
+      document.getElementById('filterSalaryBtn').classList.add('active');
+      renderJobList();
+      document.getElementById('find-jobs').scrollIntoView({ behavior: 'smooth' });
+      showToast('Filtered high-compensation leadership roles ($110k+)');
+    }
+
+    function scrollToAbout() {
+      document.getElementById('about').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Toast Utility
+    let toastTimeout = null;
+    function showToast(msg) {
+      const toast = document.getElementById('toastNotice');
+      document.getElementById('toastMessage').textContent = msg;
+      toast.classList.add('show');
+      if (toastTimeout) clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3200);
+    }
+
+    // Escape HTML Helper
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+  </script>
+
+  <!-- LVO Custom Auth Script -->
+  <script src="assets/auth-client.js"></script>
 </body>
 </html>
